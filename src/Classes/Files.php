@@ -16,7 +16,7 @@ namespace WEM\UtilsBundle\Classes;
 
 class Files
 {
-	/**
+    /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
      * @param [String] $folder [Folder name]

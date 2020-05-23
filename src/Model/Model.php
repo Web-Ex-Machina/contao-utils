@@ -1,22 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Leads Bundle for Contao Open Source CMS
- * Copyright (c) 2019 Web ex Machina
- * php version 7.3.
+ * Contao Utilities for Contao Open Source CMS
+ * Copyright (c) 2019-2020 Web ex Machina
  *
  * @category ContaoBundle
- *
+ * @package  Web-Ex-Machina/contao-utils
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @license  https://choosealicense.com/licenses/agpl-3.0/ GNU AGPLv3
- *
- * @see     https://www.webexmachina.fr
+ * @link     https://github.com/Web-Ex-Machina/contao-utils/
  */
 
 namespace WEM\UtilsBundle\Model;
 
-use RuntimeException as Exception;
 use Contao\Model;
+use RuntimeException as Exception;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
 /**
@@ -54,9 +53,9 @@ abstract class Model extends Contao\Model
 
             if (empty($arrColumns)) {
                 return static::findAll($arrOptions);
-            } else {
-                return static::findBy($arrColumns, null, $arrOptions);
             }
+
+            return static::findBy($arrColumns, null, $arrOptions);
         } catch (Exception $e) {
             throw $e;
         }
@@ -78,9 +77,9 @@ abstract class Model extends Contao\Model
 
             if (empty($arrColumns)) {
                 return static::countAll($arrOptions);
-            } else {
-                return static::countBy($arrColumns, null, $arrOptions);
             }
+
+            return static::countBy($arrColumns, null, $arrOptions);
         } catch (Exception $e) {
             throw $e;
         }
@@ -114,17 +113,17 @@ abstract class Model extends Contao\Model
     }
 
     /**
-     * Format Search statement
+     * Format Search statement.
      *
-     * @param string $strColumn    [Column to format]
-     * @param string $varValue     [Value to use]
+     * @param string $varValue [Value to use]
      *
-     * @return String
+     * @return string
      */
-    public static function formatSearchStatement($strField, $varValue) {
+    public static function formatSearchStatement($strField, $varValue)
+    {
         $t = static::$strTable;
 
-        switch($strField) {
+        switch ($strField) {
             default:
                 return "$t.$strField REGEXP '$varValue'";
         }
@@ -153,7 +152,7 @@ abstract class Model extends Contao\Model
             // Search in table
             case 'search':
                 $arrSearchColumns = [];
-                if (is_array($varValue) && array_key_exists('column', $varValue)) {
+                if (\is_array($varValue) && \array_key_exists('column', $varValue)) {
                     $arrSearchColumns[] = $varValue['column'];
                     $arrSearchKeywords = $varValue['keywords'];
                 } elseif (static::$arrSearchFields) {
@@ -176,26 +175,26 @@ abstract class Model extends Contao\Model
 
             // Wizard for active items
             case 'active':
-                if (1 == $varValue) {
+                if (1 === $varValue) {
                     $arrColumns[] = "$t.isActive = 1 AND ($t.isActiveAt = 0 OR $t.isActiveAt <= ".time().") AND ($t.isActiveUntil = 0 OR $t.isActiveUntil >= ".time().')';
-                } elseif (-1 == $varValue) {
+                } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.isActive = '' AND ($t.isActiveAt = 0 OR $t.isActiveAt >= ".time().") AND ($t.isActiveUntil = 0 OR $t.isActiveUntil <= ".time().')';
                 }
                 break;
 
             case 'invisible':
-                if (1 == $varValue) {
+                if (1 === $varValue) {
                     $arrColumns[] = "$t.invisible = 1";
-                } elseif (-1 == $varValue) {
+                } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.invisible = ''";
                 }
                 break;
 
             // Checkboxes
             case 'isActive':
-                if (1 == $varValue) {
+                if (1 === $varValue) {
                     $arrColumns[] = "$t.$strField = 1";
-                } elseif (-1 == $varValue) {
+                } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.$strField = ''";
                 }
                 break;
@@ -242,7 +241,7 @@ abstract class Model extends Contao\Model
     }
 
     /**
-     * Build a query based on the given options
+     * Build a query based on the given options.
      *
      * @param array $arrOptions The options array
      *
@@ -254,7 +253,7 @@ abstract class Model extends Contao\Model
     }
 
     /**
-     * Build a query based on the given options to count the number of records
+     * Build a query based on the given options to count the number of records.
      *
      * @param array $arrOptions The options array
      *
