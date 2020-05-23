@@ -1,0 +1,43 @@
+{
+    "name": "webexmachina/contao-utils",
+    "description": "Utilities for Contao Open Source CMS",
+     "keywords": ["utilities", "job", "application", "offer", "webexmachina", "module", "contao"],
+    "type": "contao-bundle",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Web ex Machina",
+            "homepage": "https://www.webexmachina.fr",
+            "role":"Developer"
+        }
+    ],
+    "support":{
+        "website":"https://www.webexmachina.fr/",
+        "issues":"https://github.com/web-ex-machina/contao-utils/issues",
+        "source":"https://github.com/web-ex-machina/contao-utils"
+    },
+    "require": {
+        "php": "^5.6|^7.0",
+        "contao/core-bundle": "^4.4",
+        "contao-community-alliance/composer-plugin": "*",
+        "codefog/contao-haste": "^4.24",
+        "terminal42/dcawizard": "^2.4"
+    },
+    "autoload":{
+        "psr-4": {
+            "WEM\\UtilsBundle\\": "src/"
+        },
+        "classmap": [
+            "src/Resources/contao/"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/",
+            "src/Resources/contao/languages/",
+            "src/Resources/contao/templates/"
+        ]
+    },
+    "extra":{
+        "contao-manager-plugin": "WEM\\UtilsBundle\\ContaoManager\\Plugin"
+    }
+}
