@@ -99,7 +99,7 @@ abstract class Model extends Contao\Model
             $arrColumns = [];
 
             foreach ($arrConfig as $c => $v) {
-                $arrColumns = array_merge($arrColumns, parent::formatStatement($c, $v));
+                $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
             }
 
             if ($arrConfig['not']) {
