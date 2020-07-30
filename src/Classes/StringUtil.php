@@ -51,7 +51,7 @@ class StringUtil extends \StringUtil
         $characters = '0123456789';
         $randstring = '';
         for ($i = 0; $i < $length; ++$i) {
-            $randstring = $characters[random_int(0, \strlen($characters))];
+            $randstring .= $characters[random_int(0, \strlen($characters))];
         }
 
         return $randstring;
