@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace WEM\UtilsBundle\Classes;
 
+use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
+
 /**
  * String utilities.
  *
@@ -21,6 +23,17 @@ namespace WEM\UtilsBundle\Classes;
  */
 class StringUtil extends \StringUtil
 {
+    /**
+     * Generate a random token.
+     *
+     * @return string
+     */
+    public static function generateToken()
+    {
+        $objToken = new UriSafeTokenGenerator();
+        return $objToken->generateToken();
+    }
+
     /**
      * Generate a random password.
      *
