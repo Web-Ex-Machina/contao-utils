@@ -31,15 +31,18 @@ class StringUtil extends \StringUtil
     public static function generateToken()
     {
         $objToken = new UriSafeTokenGenerator();
+
         return $objToken->generateToken();
     }
 
     /**
      * Generate a random password.
      *
-     * @todo Move to contao-utils
+     * @param int $length Optional password length
      *
      * @return string
+     *
+     * @todo Add pattern rules
      */
     public static function generatePassword($length = 8)
     {
@@ -55,7 +58,7 @@ class StringUtil extends \StringUtil
     /**
      * Generate a random code.
      *
-     * @todo Move to contao-utils
+     * @param int $length Optional code length
      *
      * @return string
      */
