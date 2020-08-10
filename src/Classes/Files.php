@@ -24,7 +24,7 @@ class Files
      *
      * @return [Object] [File Object]
      */
-    public static function base64ToImage($data, $folder, $file)
+    public static function base64ToImage($data, $folder, $file, $type = '')
     {
         if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
             $data = substr($data, strpos($data, ',') + 1);
@@ -35,22 +35,22 @@ class Files
             }
 
             $data = str_replace(' ', '+', $data);
-            $data = base64_decode($data);
-
-            if (false === $data) {
-                throw new \Exception('base64_decode failed');
-            }
-
-            $path = $folder.'/'.$file.'.'.$type;
-
-            // open the output file for writing
-            $objFile = new \File($path);
-            $objFile->truncate();
-            $objFile->write($data);
-            $objFile->close();
-
-            return $objFile;
         }
-        throw new \Exception('did not match data URI with image data');
+
+        $data = base64_decode($data);
+
+        if (false === $data) {
+            throw new \Exception('base64_decode failed');
+        }
+
+        $path = $folder.'/'.$file.'.'.$type;
+
+        // open the output file for writing
+        $objFile = new \File($path);
+        $objFile->truncate();
+        $objFile->write($data);
+        $objFile->close();
+
+        return $objFile;
     }
 }
