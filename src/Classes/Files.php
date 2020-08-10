@@ -54,4 +54,22 @@ class Files
 
         return $objFile;
     }
+
+    /**
+     * Contao Friendly Image Converter to Base64.
+     *
+     * @param \Contao\FilesModel $objFile
+     *
+     * @return string
+     */
+    public static function imageToBase64($objFile)
+    {
+        $objFile = new \File($objFile->path);
+
+        return sprintf(
+            'data:image/%s;base64,%s',
+            $objFile->extension,
+            base64_encode($objFile->getContent())
+        );
+    }
 }
