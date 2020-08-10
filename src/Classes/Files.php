@@ -31,12 +31,11 @@ class Files
         if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
             $data = substr($data, strpos($data, ',') + 1);
             $type = strtolower($type[1]); // jpg, png, gif
-
-            if (false === strpos(\Config::get('validImageTypes'), $type)) {
-                return false;
-            }
-
             $data = str_replace(' ', '+', $data);
+        }
+
+        if (!$type || !\in_array($type, \Config::get('validImageTypes'))) {
+            throw new \Exception('No valid type found');
         }
 
         $data = base64_decode($data);
