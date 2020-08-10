@@ -19,8 +19,10 @@ class Files
     /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
+     * @param [String] $data   [Base64]
      * @param [String] $folder [Folder name]
      * @param [String] $file   [File name]
+     * @param [String] $type   [File type]
      *
      * @return [Object] [File Object]
      */
