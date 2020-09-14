@@ -28,7 +28,7 @@
             "WEM\\UtilsBundle\\": "src/"
         },
         "exclude-from-classmap": [
-            "src/Resources/contao/config/"
+            "src/Resources/contao/"
         ]
     },
     "extra":{
