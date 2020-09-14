@@ -1,7 +1,7 @@
 {
     "name": "webexmachina/contao-utils",
     "description": "Utilities for Contao Open Source CMS",
-     "keywords": ["utilities", "job", "application", "offer", "webexmachina", "module", "contao"],
+     "keywords": ["utilities", "development", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
     "authors": [
@@ -28,10 +28,7 @@
             "WEM\\UtilsBundle\\": "src/"
         },
         "exclude-from-classmap": [
-            "src/Resources/contao/config/",
-            "src/Resources/contao/dca/",
-            "src/Resources/contao/languages/",
-            "src/Resources/contao/templates/"
+            "src/Resources/contao/config/"
         ]
     },
     "extra":{
