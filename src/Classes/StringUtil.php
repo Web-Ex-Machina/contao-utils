@@ -72,4 +72,27 @@ class StringUtil extends \StringUtil
 
         return $randstring;
     }
+
+    /**
+     * Convert a string value of keywords into Array.
+     *
+     * @param string $keywords      [keywords to format]
+     * @param int    $charsRequired [exclude keywords with less than x chars]
+     *
+     * @return array
+     */
+    public function formatKeywords($keywords, $charsRequired = 0)
+    {
+        $arrKeywords = [];
+        $keywords = str_replace(['+', "'", ' '], ['-', '-', '-'], $keywords);
+        $arrKeywords = explode('-', $keywords);
+
+        foreach ($arrKeywords as $key => $keyword) {
+            if ($charsRequired > 0 && \strlen($keyword) <= $charsRequired) {
+                unset($arrKeywords[$key]);
+            }
+        }
+
+        return array_values($arrKeywords);
+    }
 }
