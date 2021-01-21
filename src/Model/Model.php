@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace WEM\UtilsBundle\Model;
 
-use Contao\Model;
-use RuntimeException as Exception;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
 /**
