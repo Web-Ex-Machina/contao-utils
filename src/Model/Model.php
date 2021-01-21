@@ -21,7 +21,7 @@ use WEM\UtilsBundle\Classes\QueryBuilder;
 /**
  * Reads and writes items.
  */
-abstract class Model extends Contao\Model
+abstract class Model extends \Haste\Model\Model
 {
     /**
      * Find items, depends on the arguments.
