@@ -34,7 +34,7 @@ class Files
             $data = str_replace(' ', '+', $data);
         }
 
-        if (!$type || !\in_array($type, \Config::get('validImageTypes'))) {
+        if (!$type || !\in_array($type, explode(",", \Config::get('validImageTypes')))) {
             throw new \Exception('No valid type found');
         }
 
