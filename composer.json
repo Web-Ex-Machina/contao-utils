@@ -11,8 +11,8 @@
             "role":"Developer"
         }
     ],
-    "support":{
-        "website":"https://www.webexmachina.fr/",
+    "support": {
+        "homepage":"https://www.webexmachina.fr/",
         "issues":"https://github.com/web-ex-machina/contao-utils/issues",
         "source":"https://github.com/web-ex-machina/contao-utils"
     },
