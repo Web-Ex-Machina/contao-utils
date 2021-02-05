@@ -1,9 +1,10 @@
 {
     "name": "webexmachina/contao-utils",
     "description": "Utilities for Contao Open Source CMS",
-     "keywords": ["utilities", "development", "webexmachina", "module", "contao"],
+    "keywords": ["utilities", "development", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
+    "homepage":"https://www.webexmachina.fr/",
     "authors": [
         {
             "name": "Web ex Machina",
@@ -12,7 +13,6 @@
         }
     ],
     "support": {
-        "homepage":"https://www.webexmachina.fr/",
         "issues":"https://github.com/web-ex-machina/contao-utils/issues",
         "source":"https://github.com/web-ex-machina/contao-utils"
     },
