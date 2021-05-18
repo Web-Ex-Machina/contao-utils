@@ -95,4 +95,28 @@ class StringUtil extends \StringUtil
 
         return array_values($arrKeywords);
     }
+
+    /**
+     * Remove a query string parameter from an URL.
+     *
+     * @param string $url
+     * @param string $varname
+     *
+     * @return string
+     */
+    public static function removeQueryStringParameter($url, $varname)
+    {
+        $parsedUrl = parse_url($url);
+        $query = array();
+
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $query);
+            unset($query[$varname]);
+        }
+
+        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
+        $query = !empty($query) ? '?'. http_build_query($query) : '';
+
+        return $parsedUrl['scheme']. '://'. $parsedUrl['host']. $path. $query;
+    }
 }
