@@ -81,7 +81,7 @@ class StringUtil extends \StringUtil
      *
      * @return array
      */
-    public function formatKeywords($keywords, $charsRequired = 0)
+    public static function formatKeywords($keywords, $charsRequired = 0)
     {
         $arrKeywords = [];
         $keywords = str_replace(['+', "'", ' '], ['-', '-', '-'], $keywords);
