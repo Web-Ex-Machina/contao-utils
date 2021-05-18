@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Contao Utilities for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Copyright (c) 2019-2021 Web ex Machina
  *
  * @category ContaoBundle
  * @package  Web-Ex-Machina/contao-utils
@@ -107,16 +107,39 @@ class StringUtil extends \StringUtil
     public static function removeQueryStringParameter($url, $varname)
     {
         $parsedUrl = parse_url($url);
-        $query = array();
+        $query = [];
 
         if (isset($parsedUrl['query'])) {
             parse_str($parsedUrl['query'], $query);
             unset($query[$varname]);
         }
 
-        $path = isset($parsedUrl['path']) ? $parsedUrl['path'] : '';
-        $query = !empty($query) ? '?'. http_build_query($query) : '';
+        $path = $parsedUrl['path'] ?? '';
+        $query = !empty($query) ? '?'.http_build_query($query) : '';
 
-        return $parsedUrl['scheme']. '://'. $parsedUrl['host']. $path. $query;
+        return $parsedUrl['scheme'].'://'.$parsedUrl['host'].$path.$query;
+    }
+
+    /**
+     * Add a query string parameter into an URL.
+     *
+     * @param string $url
+     * @param string $key
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function addQueryStringParameter($url, $key, $value = null)
+    {
+        $query = parse_url($url, PHP_URL_QUERY);
+        if ($query) {
+            parse_str($query, $queryParams);
+            $queryParams[$key] = $value;
+            $url = str_replace("?$query", '?'.http_build_query($queryParams), $url);
+        } else {
+            $url .= '?'.urlencode($key).'='.urlencode($value);
+        }
+
+        return $url;
     }
 }
