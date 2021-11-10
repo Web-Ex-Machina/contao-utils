@@ -161,7 +161,7 @@ abstract class Model extends \Haste\Model\Model
                 }
 
                 if (!empty($arrSearchColumns)) {
-                    $k = implode('|', $arrSearchKeywords);
+                    $k = is_array($arrSearchKeywords) ? implode('|', $arrSearchKeywords) : $arrSearchKeywords;
                     $arrKeywords = [];
                     foreach ($arrSearchColumns as $f) {
                         $arrKeywords[] = static::formatSearchStatement($f, $k);
