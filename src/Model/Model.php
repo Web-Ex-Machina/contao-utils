@@ -213,7 +213,7 @@ abstract class Model extends \Haste\Model\Model
             // Default behaviour
             case 'ptable':
             default:
-                $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes($varValue));
+                $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));
         }
 
         return $arrColumns;
