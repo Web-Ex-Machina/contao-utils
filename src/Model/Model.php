@@ -46,7 +46,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             if (!isset($arrOptions['order'])) {
-                $arrOptions['order'] = "$t.createdAt DESC";
+                $arrOptions['order'] = static::$strOrderColumn ?: "$t.createdAt DESC";
             }
 
             if (empty($arrColumns)) {
