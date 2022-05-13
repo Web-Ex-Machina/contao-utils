@@ -22,6 +22,13 @@ use WEM\UtilsBundle\Classes\QueryBuilder;
 abstract class Model extends \Haste\Model\Model
 {
     /**
+     * Default order column
+     *
+     * @var string
+     */
+    protected static $strOrderColumn = "createdAt DESC";
+
+    /**
      * Find items, depends on the arguments.
      *
      * @param array $arrConfig  [Request Config]
@@ -46,7 +53,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             if (!isset($arrOptions['order'])) {
-                $arrOptions['order'] = static::$strOrderColumn ?: "$t.createdAt DESC";
+                $arrOptions['order'] = $t . "." . static::$strOrderColumn;
             }
 
             if (empty($arrColumns)) {
