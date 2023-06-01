@@ -34,7 +34,7 @@ class Files
             $data = str_replace(' ', '+', $data);
         }
 
-        if (!$type || !\in_array($type, explode(",", \Config::get('validImageTypes')))) {
+        if (!$type || !\in_array($type, explode(",", \Contao\Config::get('validImageTypes')))) {
             throw new \Exception('No valid type found');
         }
 
@@ -47,7 +47,7 @@ class Files
         $path = $folder.'/'.$file.'.'.$type;
 
         // open the output file for writing
-        $objFile = new \File($path);
+        $objFile = new \Contao\File($path);
         $objFile->truncate();
         $objFile->write($data);
         $objFile->close();
@@ -64,7 +64,7 @@ class Files
      */
     public static function imageToBase64($objFile)
     {
-        $objFile = new \File($objFile->path);
+        $objFile = new \Contao\File($objFile->path);
 
         return sprintf(
             'data:image/%s;base64,%s',

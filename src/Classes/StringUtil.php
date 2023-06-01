@@ -21,7 +21,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class StringUtil extends \StringUtil
+class StringUtil extends \Contao\StringUtil
 {
     /**
      * Generate a random token.

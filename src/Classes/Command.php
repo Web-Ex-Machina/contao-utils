@@ -36,7 +36,7 @@ class Command
     public static function exec($strCmd): void
     {
         // Finally, clean the Contao cache
-        $strConsolePath = \System::getContainer()->getParameter('kernel.project_dir').' /vendor/bin/contao-console';
+        $strConsolePath = \Contao\System::getContainer()->getParameter('kernel.project_dir').' /vendor/bin/contao-console';
         $cmd = sprintf(
             'php %s %s --env=prod',
             $strConsolePath,
