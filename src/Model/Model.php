@@ -36,7 +36,7 @@ abstract class Model extends \Haste\Model\Model
      * @param int   $intOffset  [Query Offset]
      * @param array $arrOptions [Query Options]
      *
-     * @return Collection
+     * @return \Contao\Model\Collection
      */
     public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = [])
     {
@@ -61,7 +61,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             return static::findBy($arrColumns, null, $arrOptions);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -85,7 +85,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             return static::countBy($arrColumns, null, $arrOptions);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -112,7 +112,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             return $arrColumns;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -231,13 +231,13 @@ abstract class Model extends \Haste\Model\Model
      *
      * @param string $strField [Column]
      *
-     * @return Collection
+     * @return \Contao\Model\Collection
      */
     public static function findItemsGroupByOneField($strField)
     {
         try {
             $t = static::$strTable;
-            $objResults = \Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
+            $objResults = \Contao\Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
 
             return $objResults;
         } catch (\Exception $e) {
