@@ -49,7 +49,7 @@ class StringUtil extends \Contao\StringUtil
         $characters = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789';
         $randstring = '';
         for ($i = 0; $i < $length; ++$i) {
-            $randstring = $characters[random_int(0, \strlen($characters) - 1)];
+            $randstring .= $characters[random_int(0, \strlen($characters) - 1)];
         }
 
         return $randstring;

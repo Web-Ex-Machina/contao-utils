@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+0.3.14 - 2023-08-10
+- Fix : password generation function misbehaviour
+
 0.3.13 - 2023-06-15
 - Fix : use FQDN for Contao's classes to please autocompletion & static code analysis tools
 
