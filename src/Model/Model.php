@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Contao Utilities for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Copyright (c) 2019-2023 Web ex Machina
  *
  * @category ContaoBundle
  * @package  Web-Ex-Machina/contao-utils
@@ -14,11 +14,10 @@ declare(strict_types=1);
 
 namespace WEM\UtilsBundle\Model;
 
+use Exception;
+use Contao\Database;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
-/**
- * Reads and writes items.
- */
 abstract class Model extends \Haste\Model\Model
 {
     /**
@@ -61,7 +60,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             return static::findBy($arrColumns, null, $arrOptions);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -85,7 +84,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             return static::countBy($arrColumns, null, $arrOptions);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -112,7 +111,7 @@ abstract class Model extends \Haste\Model\Model
             }
 
             return $arrColumns;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -237,10 +236,10 @@ abstract class Model extends \Haste\Model\Model
     {
         try {
             $t = static::$strTable;
-            $objResults = \Contao\Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
+            $objResults = Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
 
             return $objResults;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Contao Utilities for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Copyright (c) 2019-2023 Web ex Machina
  *
  * @category ContaoBundle
  * @package  Web-Ex-Machina/contao-utils
@@ -16,11 +16,6 @@ namespace WEM\UtilsBundle\Classes;
 
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 
-/**
- * String utilities.
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
 class StringUtil extends \Contao\StringUtil
 {
     /**

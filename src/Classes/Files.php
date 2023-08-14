@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Contao Utilities for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Copyright (c) 2019-2023 Web ex Machina
  *
  * @category ContaoBundle
  * @package  Web-Ex-Machina/contao-utils
@@ -13,6 +13,10 @@ declare(strict_types=1);
  */
 
 namespace WEM\UtilsBundle\Classes;
+
+use Exception;
+use Contao\Config;
+use Contao\File;
 
 class Files
 {
@@ -34,20 +38,20 @@ class Files
             $data = str_replace(' ', '+', $data);
         }
 
-        if (!$type || !\in_array($type, explode(",", \Contao\Config::get('validImageTypes')))) {
+        if (!$type || !\in_array($type, explode(",", Config::get('validImageTypes')))) {
             throw new \Exception('No valid type found');
         }
 
         $data = base64_decode($data);
 
         if (false === $data) {
-            throw new \Exception('base64_decode failed');
+            throw new Exception('base64_decode failed');
         }
 
         $path = $folder.'/'.$file.'.'.$type;
 
         // open the output file for writing
-        $objFile = new \Contao\File($path);
+        $objFile = new File($path);
         $objFile->truncate();
         $objFile->write($data);
         $objFile->close();
@@ -64,7 +68,7 @@ class Files
      */
     public static function imageToBase64($objFile)
     {
-        $objFile = new \Contao\File($objFile->path);
+        $objFile = new File($objFile->path);
 
         return sprintf(
             'data:image/%s;base64,%s',
