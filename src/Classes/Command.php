@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Contao Utilities for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Copyright (c) 2019-2023 Web ex Machina
  *
  * @category ContaoBundle
  * @package  Web-Ex-Machina/contao-utils
@@ -14,14 +14,10 @@ declare(strict_types=1);
 
 namespace WEM\UtilsBundle\Backend;
 
+use Contao\System;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-/**
- * Back end module "smartgear".
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
 class Command
 {
     /**
@@ -36,7 +32,7 @@ class Command
     public static function exec($strCmd): void
     {
         // Finally, clean the Contao cache
-        $strConsolePath = \Contao\System::getContainer()->getParameter('kernel.project_dir').' /vendor/bin/contao-console';
+        $strConsolePath = System::getContainer()->getParameter('kernel.project_dir').' /vendor/bin/contao-console';
         $cmd = sprintf(
             'php %s %s --env=prod',
             $strConsolePath,
