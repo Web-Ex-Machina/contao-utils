@@ -24,10 +24,7 @@
     "autoload":{
         "psr-4": {
             "WEM\\UtilsBundle\\": "src/"
-        },
-        "exclude-from-classmap": [
-            "src/Resources/contao/"
-        ]
+        }
     },
     "extra":{
         "contao-manager-plugin": "WEM\\UtilsBundle\\ContaoManager\\Plugin"
