@@ -98,7 +98,7 @@ class StringUtil extends \Contao\StringUtil
      *
      * @return string
      */
-    public static function formatFileSize(int $bytes)
+    public static function formatFileSize(int $bytes): string
     {
         if ($bytes >= 1073741824)
         {
