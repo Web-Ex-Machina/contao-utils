@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+x.y.z - yyyy-mm-dd
+- Add a function to format a filesize
+
 0.3.14 - 2023-08-10
 - Fix : password generation function misbehaviour
 
