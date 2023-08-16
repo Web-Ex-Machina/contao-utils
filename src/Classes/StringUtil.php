@@ -94,7 +94,7 @@ class StringUtil extends \Contao\StringUtil
     /**
      * Convert a number of bits to a readable filesize format
      *
-     * @param int $filesize
+     * @param int $bytes
      *
      * @return string
      */
