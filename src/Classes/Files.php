@@ -21,6 +21,107 @@ use Contao\File;
 class Files
 {
     /**
+     * Function to call in order to process files sent by DropZone
+     * 
+     * @param  String $folder   Folder path of uploaded files
+     * 
+     * @return Array
+     */
+    public static function processDzFileUploads($folder)
+    {
+        if (!$_FILES || empty($_FILES)) {
+            return null;
+        }
+
+        $strStatus = 'success';
+        $arrFiles = [];
+        $arrErrors = [];
+
+        foreach($_FILES as $f) {
+            try {
+                $arrFiles[] = static::processDzFileUpload($f, $folder);
+            } catch (Exception $e) {
+                $strStatus = 'error';
+                $arrErrors[] = [
+                    'file' => $f,
+                    'error' => $e->getMessage(),
+                ];
+            }
+        }
+
+        return [
+            'status' => $strStatus,
+            'files' => $arrFiles,
+            'errors' => $arrErrors,
+        ];
+    }
+
+    /**
+     * Function to process one DropZone file
+     * 
+     * @param  Array $file      Tmp File from PHP
+     * @param  String $folder   Folder path of uploaded file
+     * 
+     * @return Array
+     */
+    public static function processDzFileUpload($file, $folder)
+    {
+        // Check if last char of folder is a slash
+        if ('' !== substr($folder, -1, 1)) {
+            $folder .= '/';
+        }
+
+        $data = file_get_contents($file['tmp_name']);
+        $path = $folder . $file['name'];
+
+        // Detect if the upload is chunked or not
+        // Post is empty if the file is not sent by chunked
+        if (!empty($_POST)) {
+            // Start a session to share upload events between chunks
+            $session = System::getContainer()->get('session');
+            $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), false);
+            $path = $folder . $_POST['dzuuid'] . '_' . $_POST['dzchunkindex'];
+        } else {
+            $path = $folder . $file['name'];
+        }
+
+        // open the output file for writing
+        $objFile = new File($path);
+        $objFile->write($data);
+        $objFile->close();
+
+        // Each chunk file, after writing its tmp file, will check if the other uploads have been completed
+        if (!empty($_POST)) {
+            // Tell session we finished to upload this chunk
+            $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), true);
+
+            $blnMerge = true;
+            for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
+                if (!$session->get(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $i, $_POST['dztotalchunkcount'] - 1))) {
+                    $blnMerge = false;
+                    break;
+                }
+            }
+            
+            if ($blnMerge) {
+                $path = $folder . $file['name'];
+                $objMergedFile = new File($path);
+                $objMergedFile->truncate();
+
+                for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
+                    $objTmpFile = new File($folder . $_POST['dzuuid'] . '_' .$i);
+                    $objMergedFile->append($objTmpFile->getContent(), '');
+                    $objTmpFile->delete();
+                }
+
+                $objMergedFile->close();
+            }
+        }
+
+        return $file;
+    }
+
+    /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
      * @param [String] $data   [Base64]
