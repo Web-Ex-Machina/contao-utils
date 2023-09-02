@@ -18,7 +18,7 @@ use Exception;
 use Contao\Database;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
-abstract class Model extends \Haste\Model\Model
+abstract class Model extends \Contao\Model
 {
     /**
      * Default order column
