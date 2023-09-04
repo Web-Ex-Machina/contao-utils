@@ -31,7 +31,7 @@ class QueryBuilder
         $objBase = DcaExtractor::getInstance($arrOptions['table']);
 
         $strSelect = '*';
-        if ($arrOptions['select']) {
+        if (array_key_exists('select',$arrOptions)) {
             if (\is_array($arrOptions['select'])) {
                 $strSelect = implode(',', $arrOptions['select']);
             } else {
@@ -39,7 +39,7 @@ class QueryBuilder
             }
         }
         $strJoin = '';
-        if ($arrOptions['join']) {
+        if (array_key_exists('join',$arrOptions)) {
             $strJoin = implode('', $arrOptions['join']);
         }
 
@@ -61,7 +61,7 @@ class QueryBuilder
 
             foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if ('eager' === $arrConfig['load'] || $arrOptions['eager']) {
+                if ('eager' === $arrConfig['load'] || array_key_exists('eager',$arrOptions)) {
                     if ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type']) {
                         ++$intCount;
                         $objRelated = DcaExtractor::getInstance($arrConfig['table']);
@@ -107,7 +107,7 @@ class QueryBuilder
             }
         }
 
-        if (true === $arrOptions['debug']) {
+        if (array_key_exists('debug',$arrOptions) && true === $arrOptions['debug']) {
             print_r($strQuery);
             die;
         }
@@ -130,7 +130,7 @@ class QueryBuilder
             $strQuery .= ' WHERE '.(\is_array($arrOptions['column']) ? implode(' AND ', $arrOptions['column']) : $arrOptions['table'].'.'.Database::quoteIdentifier($arrOptions['column']).'=?');
         }
 
-        if (true === $arrOptions['debug']) {
+        if (array_key_exists('debug',$arrOptions) && true === $arrOptions['debug']) {
             print_r($strQuery);
             die;
         }

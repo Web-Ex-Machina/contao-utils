@@ -106,7 +106,7 @@ abstract class Model extends \Contao\Model
                 $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
             }
 
-            if ($arrConfig['not']) {
+            if (array_key_exists('not',$arrConfig)) {
                 $arrColumns[] = $arrConfig['not'];
             }
 
