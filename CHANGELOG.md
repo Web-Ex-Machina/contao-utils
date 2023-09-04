@@ -1,8 +1,13 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
-x.y.z - yyyy-mm-dd
+1.0.1 - 2023-09-04
 - Add a function to format a filesize
+- Add functions to manage file upload with [DropZone](https://www.dropzone.dev/)
+
+1.0.0 - 2023-08-14
+- Updated `README.md`
+- Cleaned dependencies in `composer.json`
 
 0.3.14 - 2023-08-10
 - Fix : password generation function misbehaviour
