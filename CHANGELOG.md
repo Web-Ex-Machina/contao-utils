@@ -3,6 +3,7 @@ Extension "Utilities" for Contao Open Source CMS
 
 1.0.2 - 2024-03-12
 - Fix missing class import
+- Feat : add file transfert is complete & path in function return when using file upload with [DropZone](https://www.dropzone.dev/)
 
 1.0.1 - 2023-09-04
 - Add a function to format a filesize

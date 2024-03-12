@@ -91,6 +91,8 @@ class Files
         $objFile->write($data);
         $objFile->close();
 
+        $file['complete'] = false;
+
         // Each chunk file, after writing its tmp file, will check if the other uploads have been completed
         if (!empty($_POST)) {
             // Tell session we finished to upload this chunk
@@ -115,9 +117,13 @@ class Files
                     $objTmpFile->delete();
                 }
 
+                $file['complete'] = true;
                 $objMergedFile->close();
             }
         }
+
+        // Add final path to returned array
+        $file['path'] = $path;
 
         return $file;
     }
