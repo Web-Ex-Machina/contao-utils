@@ -17,6 +17,7 @@ namespace WEM\UtilsBundle\Classes;
 use Exception;
 use Contao\Config;
 use Contao\File;
+use Contao\System;
 
 class Files
 {
