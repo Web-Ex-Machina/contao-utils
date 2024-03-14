@@ -17,6 +17,8 @@ namespace WEM\UtilsBundle\Classes;
 use Exception;
 use Contao\Config;
 use Contao\File;
+use Contao\Input;
+use Contao\System;
 
 class Files
 {
@@ -76,7 +78,8 @@ class Files
 
         // Detect if the upload is chunked or not
         // Post is empty if the file is not sent by chunked
-        if (!empty($_POST)) {
+        // if (!empty($_POST)) {
+        if (Input::post('dzuuid')) {
             // Start a session to share upload events between chunks
             $session = System::getContainer()->get('session');
             $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), false);
@@ -90,8 +93,11 @@ class Files
         $objFile->write($data);
         $objFile->close();
 
+        $file['complete'] = false;
+
         // Each chunk file, after writing its tmp file, will check if the other uploads have been completed
-        if (!empty($_POST)) {
+        // if (!empty($_POST)) {
+        if (Input::post('dzuuid')) {
             // Tell session we finished to upload this chunk
             $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), true);
 
@@ -114,9 +120,15 @@ class Files
                     $objTmpFile->delete();
                 }
 
+                $file['complete'] = true;
                 $objMergedFile->close();
             }
+        }else{
+            $file['complete'] = true;
         }
+
+        // Add final path to returned array
+        $file['path'] = $path;
 
         return $file;
     }
