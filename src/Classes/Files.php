@@ -133,6 +133,21 @@ class Files
         return $file;
     }
 
+    public static function cancelDzFileUpload($dzuuid, $dztotalchunkcount, $folder): void
+    {
+        // Check if last char of folder is a slash
+        if ('' !== substr($folder, -1, 1)) {
+            $folder .= '/';
+        }
+        for ($i = 0; $i < $dztotalchunkcount; $i++) {
+            $objTmpFile = new File($folder . $dzuuid . '_' .$i);
+            if($objTmpFile->exists()){
+                $objTmpFile->delete();
+            }
+        }
+        return;
+    }
+
     /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
