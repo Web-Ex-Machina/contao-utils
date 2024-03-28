@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+1.0.3 - 2024-03-28
+- Feat : ability to cancel a [DropZone](https://www.dropzone.dev/) upload
+
 1.0.2 - 2024-03-12
 - Fix missing class import
 - Feat : add file transfert is complete & path in function return when using file upload with [DropZone](https://www.dropzone.dev/)

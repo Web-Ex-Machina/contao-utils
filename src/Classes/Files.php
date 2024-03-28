@@ -68,10 +68,7 @@ class Files
      */
     public static function processDzFileUpload($file, $folder)
     {
-        // Check if last char of folder is a slash
-        if ('' !== substr($folder, -1, 1)) {
-            $folder .= '/';
-        }
+        $folder = self::addLastSlashToPathIfNeeded($folder);
 
         $data = file_get_contents($file['tmp_name']);
         $path = $folder . $file['name'];
@@ -83,7 +80,8 @@ class Files
             // Start a session to share upload events between chunks
             $session = System::getContainer()->get('session');
             $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), false);
-            $path = $folder . $_POST['dzuuid'] . '_' . $_POST['dzchunkindex'];
+            // $path = $folder . $_POST['dzuuid'] . '_' . $_POST['dzchunkindex'];
+            $path = self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], (int) $_POST['dzchunkindex']);
         } else {
             $path = $folder . $file['name'];
         }
@@ -115,7 +113,7 @@ class Files
                 $objMergedFile->truncate();
 
                 for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
-                    $objTmpFile = new File($folder . $_POST['dzuuid'] . '_' .$i);
+                    $objTmpFile = new File(self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], (int) $i));
                     $objMergedFile->append($objTmpFile->getContent(), '');
                     $objTmpFile->delete();
                 }
@@ -131,6 +129,24 @@ class Files
         $file['path'] = $path;
 
         return $file;
+    }
+    /**
+     * Cancel a DropZone file upload
+     * 
+     * @param  string       $folder            The folder in wich the upload file/chunks are
+     * @param  string       $dzuuid            The upload's UUID
+     * @param  int          $dztotalchunkcount The total amount of chunks
+     * 
+     */
+    public static function cancelDzFileUpload(string $folder, string $dzuuid, int $dztotalchunkcount): void
+    {
+        for ($i = 0; $i < $dztotalchunkcount; $i++) {
+            $objTmpFile = new File(self::buildPathForDzUploadChunk($folder,$dzuuid, (int) $i));
+            if($objTmpFile->exists()){
+                $objTmpFile->delete();
+            }
+        }
+        return;
     }
 
     /**
@@ -188,5 +204,33 @@ class Files
             $objFile->extension,
             base64_encode($objFile->getContent())
         );
+    }
+
+    /**
+     * Add last slash to a path if needed
+     * 
+     * @param string $path
+     */
+    public static function addLastSlashToPathIfNeeded(string $path): string
+    {
+        if ('/' !== substr($path, -1, 1)) {
+            $path .= '/';
+        }
+
+        return $path;
+    }
+
+    /**
+     * Build path for a DZ upload's chunk
+     * 
+     * @param  string $folder  The folder path
+     * @param  string $dzuuid  The DZ upload's UUID
+     * @param  int    $chunkNo The DZ upload's chunk no
+     * 
+     * @return string The built path
+     */
+    public static function buildPathForDzUploadChunk(string $folder, string $dzuuid, int $chunkNo): string
+    {
+        return self::addLastSlashToPathIfNeeded($folder).$dzuuid.'_'.$chunkNo;
     }
 }
