@@ -24,12 +24,12 @@ class Files
 {
     /**
      * Function to call in order to process files sent by DropZone
-     * 
-     * @param  String $folder   Folder path of uploaded files
-     * 
-     * @return Array
-     */
-    public static function processDzFileUploads($folder)
+     *
+     * @param string $folder Folder path of uploaded files
+     *
+     * @return array|null
+     */    
+    public static function processDzFileUploads(string $folder): ?array
     {
         if (!$_FILES || empty($_FILES)) {
             return null;
@@ -60,13 +60,14 @@ class Files
 
     /**
      * Function to process one DropZone file
-     * 
-     * @param  Array $file      Tmp File from PHP
-     * @param  String $folder   Folder path of uploaded file
-     * 
-     * @return Array
+     *
+     * @param array $file Tmp File from PHP
+     * @param string $folder Folder path of uploaded file
+     *
+     * @return array
+     * @throws Exception
      */
-    public static function processDzFileUpload($file, $folder)
+    public static function processDzFileUpload(array $file, string $folder): array
     {
         $folder = self::addLastSlashToPathIfNeeded($folder);
 
@@ -130,13 +131,15 @@ class Files
 
         return $file;
     }
+
     /**
      * Cancel a DropZone file upload
-     * 
-     * @param  string       $folder            The folder in wich the upload file/chunks are
-     * @param  string       $dzuuid            The upload's UUID
-     * @param  int          $dztotalchunkcount The total amount of chunks
-     * 
+     *
+     * @param string $folder The folder in wich the upload file/chunks are
+     * @param string $dzuuid The upload's UUID
+     * @param int $dztotalchunkcount The total amount of chunks
+     *
+     * @throws Exception
      */
     public static function cancelDzFileUpload(string $folder, string $dzuuid, int $dztotalchunkcount): void
     {
@@ -146,20 +149,20 @@ class Files
                 $objTmpFile->delete();
             }
         }
-        return;
     }
 
     /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
-     * @param [String] $data   [Base64]
-     * @param [String] $folder [Folder name]
-     * @param [String] $file   [File name]
-     * @param [String] $type   [File type]
+     * @param string $data Base64 file 
+     * @param string $folder folder name
+     * @param string $file file name
+     * @param string $type file type (extensions)
      *
-     * @return [Object] [File Object]
+     * @return File
+     * @throws Exception
      */
-    public static function base64ToImage($data, $folder, $file, $type = '')
+    public static function base64ToImage(string $data, string $folder, string $file, string $type = ''): File
     {
         if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
             $data = substr($data, strpos($data, ',') + 1);
@@ -194,8 +197,9 @@ class Files
      * @param \Contao\FilesModel $objFile
      *
      * @return string
+     * @throws Exception
      */
-    public static function imageToBase64($objFile)
+    public static function imageToBase64(\Contao\FilesModel $objFile): string
     {
         $objFile = new File($objFile->path);
 
@@ -208,8 +212,10 @@ class Files
 
     /**
      * Add last slash to a path if needed
-     * 
+     *
      * @param string $path
+     * 
+     * @return string
      */
     public static function addLastSlashToPathIfNeeded(string $path): string
     {

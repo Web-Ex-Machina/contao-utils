@@ -25,19 +25,23 @@ abstract class Model extends \Contao\Model
      *
      * @var string
      */
-    protected static $strOrderColumn = "createdAt DESC";
+    protected static string $strOrderColumn = "createdAt DESC";
 
     /**
      * Find items, depends on the arguments.
      *
-     * @param array $arrConfig  [Request Config]
-     * @param int   $intLimit   [Query Limit]
-     * @param int   $intOffset  [Query Offset]
+     * @param array $arrConfig [Request Config]
+     * @param int $intLimit [Query Limit]
+     * @param int $intOffset [Query Offset]
      * @param array $arrOptions [Query Options]
      *
      * @return \Contao\Model\Collection
+     * @throws Exception
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = [])
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): \Contao\Model\Collection
     {
         try {
             $t = static::$strTable;
@@ -72,8 +76,9 @@ abstract class Model extends \Contao\Model
      * @param array [Query Options]
      *
      * @return int
+     * @throws Exception
      */
-    public static function countItems($arrConfig = [], array $arrOptions = [])
+    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
         try {
             $t = static::$strTable;
@@ -95,8 +100,9 @@ abstract class Model extends \Contao\Model
      * @param array $arrConfig [Configuration to format]
      *
      * @return array
+     * @throws Exception
      */
-    public static function formatColumns($arrConfig)
+    public static function formatColumns(array $arrConfig): array
     {
         try {
             $t = static::$strTable;
@@ -119,11 +125,12 @@ abstract class Model extends \Contao\Model
     /**
      * Format Search statement.
      *
+     * @param $strField
      * @param string $varValue [Value to use]
      *
      * @return string
      */
-    public static function formatSearchStatement($strField, $varValue)
+    public static function formatSearchStatement($strField, string $varValue): string
     {
         $t = static::$strTable;
 
@@ -142,7 +149,7 @@ abstract class Model extends \Contao\Model
      *
      * @return array
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement(string $strField, mixed $varValue, string $strOperator = '='): array
     {
         $arrColumns = [];
         $t = static::$strTable;
@@ -160,7 +167,7 @@ abstract class Model extends \Contao\Model
                     $arrSearchColumns[] = $varValue['column'];
                     $arrSearchKeywords = $varValue['keywords'];
                 } elseif (static::$arrSearchFields) {
-                    $arrSearchColumns = static::$arrSearchFields;
+                    $arrSearchColumns = static::$arrSearchFields; //TODO : Elle existe cette var ?
                     $arrSearchKeywords = $varValue;
                 } else {
                     break;
@@ -231,14 +238,14 @@ abstract class Model extends \Contao\Model
      * @param string $strField [Column]
      *
      * @return \Contao\Model\Collection
+     * @throws Exception
      */
-    public static function findItemsGroupByOneField($strField)
+    public static function findItemsGroupByOneField(string $strField): \Contao\Model\Collection
     {
         try {
             $t = static::$strTable;
-            $objResults = Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
+            return Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
 
-            return $objResults;
         } catch (Exception $e) {
             throw $e;
         }
@@ -251,7 +258,7 @@ abstract class Model extends \Contao\Model
      *
      * @return string The query string
      */
-    protected static function buildFindQuery(array $arrOptions)
+    protected static function buildFindQuery(array $arrOptions): string
     {
         return QueryBuilder::find($arrOptions);
     }
@@ -263,7 +270,7 @@ abstract class Model extends \Contao\Model
      *
      * @return string The query string
      */
-    protected static function buildCountQuery(array $arrOptions)
+    protected static function buildCountQuery(array $arrOptions): string
     {
         return QueryBuilder::count($arrOptions);
     }

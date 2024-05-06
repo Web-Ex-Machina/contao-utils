@@ -23,7 +23,7 @@ class StringUtil extends \Contao\StringUtil
      *
      * @return string
      */
-    public static function generateToken()
+    public static function generateToken(): string
     {
         $objToken = new UriSafeTokenGenerator();
 
@@ -39,7 +39,7 @@ class StringUtil extends \Contao\StringUtil
      *
      * @todo Add pattern rules
      */
-    public static function generatePassword($length = 8)
+    public static function generatePassword(int $length = 8): string
     {
         $characters = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789';
         $randstring = '';
@@ -57,7 +57,7 @@ class StringUtil extends \Contao\StringUtil
      *
      * @return string
      */
-    public static function generateCode($length = 6)
+    public static function generateCode(int $length = 6): string
     {
         $characters = '0123456789';
         $randstring = '';
@@ -72,11 +72,11 @@ class StringUtil extends \Contao\StringUtil
      * Convert a string value of keywords into Array.
      *
      * @param string $keywords      [keywords to format]
-     * @param int    $charsRequired [exclude keywords with less than x chars]
+     * @param int $charsRequired [exclude keywords with less than x chars]
      *
      * @return array
      */
-    public static function formatKeywords($keywords, $charsRequired = 0)
+    public static function formatKeywords(string $keywords, int $charsRequired = 0): array
     {
         $arrKeywords = [];
         $keywords = str_replace(['+', "'", ' '], ['-', '-', '-'], $keywords);

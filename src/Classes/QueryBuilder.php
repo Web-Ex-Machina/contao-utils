@@ -26,7 +26,7 @@ class QueryBuilder
      *
      * @return string The query string
      */
-    public static function find(array $arrOptions)
+    public static function find(array $arrOptions): string
     {
         $objBase = DcaExtractor::getInstance($arrOptions['table']);
 
@@ -122,7 +122,7 @@ class QueryBuilder
      *
      * @return string The query string
      */
-    public static function count(array $arrOptions)
+    public static function count(array $arrOptions): string
     {
         $strQuery = 'SELECT COUNT(*) AS count FROM '.$arrOptions['table'];
 
