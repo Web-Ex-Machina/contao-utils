@@ -31,7 +31,7 @@ class Files
      */    
     public static function processDzFileUploads(string $folder): ?array
     {
-        if (!$_FILES || empty($_FILES)) {
+        if (empty($_FILES)) {
             return null;
         }
 

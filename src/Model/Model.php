@@ -59,7 +59,7 @@ abstract class Model extends \Contao\Model
                 $arrOptions['order'] = $t . "." . static::$strOrderColumn;
             }
 
-            if (empty($arrColumns)) {
+            if ($arrColumns === []) {
                 return static::findAll($arrOptions);
             }
 
@@ -84,8 +84,8 @@ abstract class Model extends \Contao\Model
             $t = static::$strTable;
             $arrColumns = static::formatColumns($arrConfig);
 
-            if (empty($arrColumns)) {
-                return static::countAll($arrOptions);
+            if ($arrColumns === []) {
+                return static::countAll();
             }
 
             return static::countBy($arrColumns, null, $arrOptions);
@@ -134,10 +134,7 @@ abstract class Model extends \Contao\Model
     {
         $t = static::$strTable;
 
-        switch ($strField) {
-            default:
-                return "$t.$strField REGEXP '$varValue'";
-        }
+        return "$t.$strField REGEXP '$varValue'";
     }
 
     /**

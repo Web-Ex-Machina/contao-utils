@@ -114,11 +114,11 @@ class StringUtil extends \Contao\StringUtil
         }
         elseif ($bytes > 1)
         {
-            $bytes = $bytes . ' bytes';
+            $bytes .= ' bytes';
         }
         elseif ($bytes == 1)
         {
-            $bytes = $bytes . ' byte';
+            $bytes .= ' byte';
         }
         else
         {
