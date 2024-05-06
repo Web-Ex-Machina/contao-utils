@@ -22,8 +22,6 @@ abstract class Model extends \Contao\Model
 {
     /**
      * Default order column
-     *
-     * @var string
      */
     protected static string $strOrderColumn = "createdAt DESC";
 
@@ -35,7 +33,6 @@ abstract class Model extends \Contao\Model
      * @param int $intOffset [Query Offset]
      * @param array $arrOptions [Query Options]
      *
-     * @return \Contao\Model\Collection
      * @throws Exception
      */
     public static function findItems(
@@ -75,7 +72,6 @@ abstract class Model extends \Contao\Model
      * @param array [Request Config]
      * @param array [Query Options]
      *
-     * @return int
      * @throws Exception
      */
     public static function countItems(array $arrConfig = [], array $arrOptions = []): int
@@ -99,7 +95,6 @@ abstract class Model extends \Contao\Model
      *
      * @param array $arrConfig [Configuration to format]
      *
-     * @return array
      * @throws Exception
      */
     public static function formatColumns(array $arrConfig): array
@@ -127,8 +122,6 @@ abstract class Model extends \Contao\Model
      *
      * @param $strField
      * @param string $varValue [Value to use]
-     *
-     * @return string
      */
     public static function formatSearchStatement($strField, string $varValue): string
     {
@@ -143,8 +136,6 @@ abstract class Model extends \Contao\Model
      * @param string $strField    [Column to format]
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
      */
     public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
@@ -238,7 +229,6 @@ abstract class Model extends \Contao\Model
      *
      * @param string $strField [Column]
      *
-     * @return \Contao\Model\Collection
      * @throws Exception
      */
     public static function findItemsGroupByOneField(string $strField): \Contao\Model\Collection
@@ -246,6 +236,7 @@ abstract class Model extends \Contao\Model
         try {
             $t = static::$strTable;
             return Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
+            // TODO : ça retourne la bonne chose ça ?
 
         } catch (Exception $exception) {
             throw $exception;

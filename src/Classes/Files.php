@@ -26,9 +26,7 @@ class Files
      * Function to call in order to process files sent by DropZone
      *
      * @param string $folder Folder path of uploaded files
-     *
-     * @return array|null
-     */    
+     */
     public static function processDzFileUploads(string $folder): ?array
     {
         if (empty($_FILES)) {
@@ -64,7 +62,6 @@ class Files
      * @param array $file Tmp File from PHP
      * @param string $folder Folder path of uploaded file
      *
-     * @return array
      * @throws Exception
      */
     public static function processDzFileUpload(array $file, string $folder): array
@@ -114,7 +111,7 @@ class Files
                 $objMergedFile->truncate();
 
                 for ($i = 0; $i < $_POST['dztotalchunkcount']; ++$i) {
-                    $objTmpFile = new File(self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], (int) $i));
+                    $objTmpFile = new File(self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], $i));
                     $objMergedFile->append($objTmpFile->getContent(), '');
                     $objTmpFile->delete();
                 }
@@ -144,7 +141,7 @@ class Files
     public static function cancelDzFileUpload(string $folder, string $dzuuid, int $dztotalchunkcount): void
     {
         for ($i = 0; $i < $dztotalchunkcount; ++$i) {
-            $objTmpFile = new File(self::buildPathForDzUploadChunk($folder,$dzuuid, (int) $i));
+            $objTmpFile = new File(self::buildPathForDzUploadChunk($folder,$dzuuid, $i));
             if($objTmpFile->exists()){
                 $objTmpFile->delete();
             }
@@ -154,12 +151,11 @@ class Files
     /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
-     * @param string $data Base64 file 
+     * @param string $data Base64 file
      * @param string $folder folder name
      * @param string $file file name
      * @param string $type file type (extensions)
      *
-     * @return File
      * @throws Exception
      */
     public static function base64ToImage(string $data, string $folder, string $file, string $type = ''): File
@@ -194,9 +190,6 @@ class Files
     /**
      * Contao Friendly Image Converter to Base64.
      *
-     * @param \Contao\FilesModel $objFile
-     *
-     * @return string
      * @throws Exception
      */
     public static function imageToBase64(\Contao\FilesModel $objFile): string
@@ -213,9 +206,6 @@ class Files
     /**
      * Add last slash to a path if needed
      *
-     * @param string $path
-     * 
-     * @return string
      */
     public static function addLastSlashToPathIfNeeded(string $path): string
     {

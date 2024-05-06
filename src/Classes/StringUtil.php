@@ -20,8 +20,6 @@ class StringUtil extends \Contao\StringUtil
 {
     /**
      * Generate a random token.
-     *
-     * @return string
      */
     public static function generateToken(): string
     {
@@ -34,8 +32,6 @@ class StringUtil extends \Contao\StringUtil
      * Generate a random password.
      *
      * @param int $length Optional password length
-     *
-     * @return string
      *
      * @todo Add pattern rules
      */
@@ -54,8 +50,6 @@ class StringUtil extends \Contao\StringUtil
      * Generate a random code.
      *
      * @param int $length Optional code length
-     *
-     * @return string
      */
     public static function generateCode(int $length = 6): string
     {
@@ -73,8 +67,6 @@ class StringUtil extends \Contao\StringUtil
      *
      * @param string $keywords      [keywords to format]
      * @param int $charsRequired [exclude keywords with less than x chars]
-     *
-     * @return array
      */
     public static function formatKeywords(string $keywords, int $charsRequired = 0): array
     {
@@ -94,9 +86,6 @@ class StringUtil extends \Contao\StringUtil
     /**
      * Convert a number of bits to a readable filesize format
      *
-     * @param int $bytes
-     *
-     * @return string
      */
     public static function formatFileSize(int $bytes): string
     {
