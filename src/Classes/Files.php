@@ -101,7 +101,7 @@ class Files
             $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), true);
 
             $blnMerge = true;
-            for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
+            for ($i = 0; $i < $_POST['dztotalchunkcount']; ++$i) {
                 if (!$session->get(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $i, $_POST['dztotalchunkcount'] - 1))) {
                     $blnMerge = false;
                     break;
@@ -113,7 +113,7 @@ class Files
                 $objMergedFile = new File($path);
                 $objMergedFile->truncate();
 
-                for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
+                for ($i = 0; $i < $_POST['dztotalchunkcount']; ++$i) {
                     $objTmpFile = new File(self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], (int) $i));
                     $objMergedFile->append($objTmpFile->getContent(), '');
                     $objTmpFile->delete();
@@ -143,7 +143,7 @@ class Files
      */
     public static function cancelDzFileUpload(string $folder, string $dzuuid, int $dztotalchunkcount): void
     {
-        for ($i = 0; $i < $dztotalchunkcount; $i++) {
+        for ($i = 0; $i < $dztotalchunkcount; ++$i) {
             $objTmpFile = new File(self::buildPathForDzUploadChunk($folder,$dzuuid, (int) $i));
             if($objTmpFile->exists()){
                 $objTmpFile->delete();

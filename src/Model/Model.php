@@ -64,8 +64,8 @@ abstract class Model extends \Contao\Model
             }
 
             return static::findBy($arrColumns, null, $arrOptions);
-        } catch (Exception $e) {
-            throw $e;
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -89,8 +89,8 @@ abstract class Model extends \Contao\Model
             }
 
             return static::countBy($arrColumns, null, $arrOptions);
-        } catch (Exception $e) {
-            throw $e;
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -117,8 +117,8 @@ abstract class Model extends \Contao\Model
             }
 
             return $arrColumns;
-        } catch (Exception $e) {
-            throw $e;
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -149,7 +149,7 @@ abstract class Model extends \Contao\Model
      *
      * @return array
      */
-    public static function formatStatement(string $strField, mixed $varValue, string $strOperator = '='): array
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
         $arrColumns = [];
         $t = static::$strTable;
@@ -179,6 +179,7 @@ abstract class Model extends \Contao\Model
                     foreach ($arrSearchColumns as $f) {
                         $arrKeywords[] = static::formatSearchStatement($f, $k);
                     }
+
                     $arrColumns[] = '('.implode(' OR ', $arrKeywords).')';
                 }
 
@@ -191,6 +192,7 @@ abstract class Model extends \Contao\Model
                 } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.isActive = '' AND ($t.isActiveAt = 0 OR $t.isActiveAt >= ".time().") AND ($t.isActiveUntil = 0 OR $t.isActiveUntil <= ".time().')';
                 }
+
                 break;
 
             case 'invisible':
@@ -199,6 +201,7 @@ abstract class Model extends \Contao\Model
                 } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.invisible = ''";
                 }
+
                 break;
 
             // Checkboxes
@@ -208,6 +211,7 @@ abstract class Model extends \Contao\Model
                 } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.$strField = ''";
                 }
+
                 break;
 
             // Dates
@@ -246,8 +250,8 @@ abstract class Model extends \Contao\Model
             $t = static::$strTable;
             return Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
 
-        } catch (Exception $e) {
-            throw $e;
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 

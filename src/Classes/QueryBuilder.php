@@ -38,6 +38,7 @@ class QueryBuilder
                 $strSelect = $arrOptions['select'];
             }
         }
+
         $strJoin = '';
         if (array_key_exists('join',$arrOptions)) {
             $strJoin = implode('', $arrOptions['join']);
