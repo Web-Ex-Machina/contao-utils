@@ -12,7 +12,6 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-utils/
  */
 
-// TODO : deplacer le fichier dans Backend ou retirer Backend ici atention ça va peter des truc
 namespace WEM\UtilsBundle\Backend;
 
 use Contao\System;
@@ -42,7 +41,7 @@ class Command
 
         $process = method_exists(Process::class, 'fromShellCommandline') ? Process::fromShellCommandline(
             $cmd
-        ) : new Process($cmd);
+        ) : new Process([$cmd]);
         $process->run();
 
         if (!$process->isSuccessful()) {

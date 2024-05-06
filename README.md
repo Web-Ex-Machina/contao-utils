@@ -1,7 +1,7 @@
 Extension "Utilities" for Contao Open Source CMS
 ======================
 
-Functionnalities
+Functionalities
 -------------------
  * Provide some utilies for develop Contao extensions
  * Class to execute commands

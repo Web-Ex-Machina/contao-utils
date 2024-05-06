@@ -32,11 +32,7 @@ class QueryBuilder
 
         $strSelect = '*';
         if (array_key_exists('select',$arrOptions)) {
-            if (\is_array($arrOptions['select'])) {
-                $strSelect = implode(',', $arrOptions['select']);
-            } else {
-                $strSelect = $arrOptions['select'];
-            }
+            $strSelect = \is_array($arrOptions['select']) ? implode(',', $arrOptions['select']) : $arrOptions['select'];
         }
 
         $strJoin = '';
@@ -48,11 +44,7 @@ class QueryBuilder
             $strQuery = 'SELECT '.$strSelect.' FROM '.$arrOptions['table'].$strJoin;
         } else {
             $arrJoins = [];
-            if ('*' === $strSelect) {
-                $arrFields = [$arrOptions['table'].'.*'];
-            } else {
-                $arrFields = [$strSelect];
-            }
+            $arrFields = '*' === $strSelect ? [$arrOptions['table'].'.*'] : [$strSelect];
 
             if ('' !== $strJoin) {
                 $arrJoins[] = $strJoin;
