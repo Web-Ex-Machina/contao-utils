@@ -43,7 +43,7 @@ abstract class Model extends \Contao\Model
     public static function findItems(
         array $arrConfig = [], int $intLimit = 0,
         int $intOffset = 0, array $arrOptions = []
-    ): Collection
+    ): ?Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
