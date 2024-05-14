@@ -1,0 +1,4 @@
+services:
+  wem_utils.utils.encryption:
+    class: WEM\UtilsBundle\Classes\Encryption
+    public: true

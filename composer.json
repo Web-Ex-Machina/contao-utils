@@ -19,7 +19,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "contao/core-bundle": "^4.9 || ^5.0",
-        "codefog/contao-haste": "^4.24 || ^5.0"
+        "codefog/contao-haste": "^4.24 || ^5.0",
+        "phpseclib/phpseclib": "^3.0"
     },
     "autoload":{
         "psr-4": {
@@ -28,5 +29,16 @@
     },
     "extra":{
         "contao-manager-plugin": "WEM\\UtilsBundle\\ContaoManager\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "php-http/discovery": true,
+            "contao/manager-plugin": true
+        }
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0",
+        "rector/rector": "^1.0"
     }
 }
