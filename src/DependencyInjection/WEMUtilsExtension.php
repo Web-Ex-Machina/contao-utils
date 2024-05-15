@@ -29,12 +29,16 @@ class WEMUtilsExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $mergedConfig, ContainerBuilder $container): void
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yml');
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('wem_contao_encryption.encryption_key', $config['encryption_key']);
+        $container->setParameter('wem_contao_encryption.truncate_encryption_key', $config['truncate_encryption_key']);
     }
 }

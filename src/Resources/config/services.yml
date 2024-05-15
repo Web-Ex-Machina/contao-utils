@@ -1,4 +1,8 @@
 services:
-  wem_utils.utils.encryption:
+  wem.encryption:
     class: WEM\UtilsBundle\Classes\Encryption
+    public: true
+    arguments: [ "%wem_contao_encryption.encryption_key%", "%wem_contao_encryption.truncate_encryption_key%" ]
+  WEM\UtilsBundle\Classes\Encryption:
+    alias: wem.encryption
     public: true

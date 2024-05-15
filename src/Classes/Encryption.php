@@ -74,4 +74,28 @@ class Encryption
 
         return $cipher->decrypt($value);
     }
+
+    /**
+     * Encrypts the given data and returns it as a base64 encoded string.
+     *
+     * @param string $data The data to be encrypted.
+     * @return string The encrypted data as a base64 encoded string.
+     */
+    public function encrypt_b64(string $data): string
+    {
+        $data_secured = $this->encrypt($data);
+        return base64_encode($data_secured);
+    }
+
+    /**
+     * Decrypts base64 encoded data.
+     *
+     * @param string $data64 The base64 encoded data.
+     * @return string The decrypted data.
+     */
+    public function decrypt_b64(string $data64): string
+    {
+        $data = \base64_decode($data64);
+        return $this->decrypt($data);
+    }
 }
