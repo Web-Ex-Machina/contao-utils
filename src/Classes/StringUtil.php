@@ -116,4 +116,56 @@ class StringUtil extends \Contao\StringUtil
 
         return $bytes;
     }
+
+    /**
+     * Clean the tinyMCE data, see rules below
+     * Rule #1 : Replace [nbsp] tags by ' '
+     * Rule #2 : Find special characters and add an [nbsp] just before.
+     *
+     * @param string $varValue [Value to clean]
+     */
+    public static function cleanSpaces(string $varValue): string
+    {
+        // Rule #1
+        $varValue = str_replace(['[nbsp]', '&nbsp;'], [' ', ' '], $varValue);
+
+        // Rule #2
+        $varValue = preg_replace("/\s(\?|\!|\:|\;|\»)/", '&nbsp;\\1', $varValue);
+
+        return preg_replace("/(\«)\s/", '\\1&nbsp;', $varValue);
+    }
+
+    /**
+     * Generates a random key of specified length.
+     *
+     * @param int|null $length The length of the key (default is 16)
+     * @return string The random key generated
+     * @throws \Exception
+     */
+    public static function generateKey(?int $length = 16): string
+    {
+        $characters = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789_-';
+        $randstring = '';
+        for ($i = 0; $i < $length; ++$i) {
+            $randstring .= $characters[random_int(0, \strlen($characters) - 1)];
+        }
+
+        return $randstring;
+    }
+
+    public static function getFormStorageDataValueAsString($mixed): string
+    {
+        $value = self::deserialize($mixed);
+        if (\is_array($value)) {
+            $formattedValue = [];
+            foreach ($value as $valueChunk) {
+                $formattedValue[] = sprintf('%s (%s)', $valueChunk['label'], $valueChunk['value']);
+            }
+            $formattedValue = implode(',', $formattedValue);
+        } else {
+            $formattedValue = (string) $value;
+        }
+
+        return $formattedValue;
+    }
 }
