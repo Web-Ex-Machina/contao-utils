@@ -229,4 +229,22 @@ class Files
     {
         return self::addLastSlashToPathIfNeeded($folder).$dzuuid.'_'.$chunkNo;
     }
+
+    /**
+     * Check if a file is displaybale in browser.
+     *
+     * @param File $objFile The file to check
+     */
+    public static function isDisplayableInBrowser(File $objFile): bool
+    {
+        $mime = strtolower($objFile->mime);
+
+        if ('image/' === substr($mime, 0, 6)
+            || 'application/pdf' === $mime
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }
