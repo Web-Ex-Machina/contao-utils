@@ -62,6 +62,57 @@ class StringUtil extends \Contao\StringUtil
         return $randstring;
     }
 
+
+    /**
+     * Generate a password from words.
+     *
+     * @param int $length The number of words to generate.
+     * @param string $separator The separator between words.
+     * @param bool $withNumber Whether to include a random number with each word.
+     * @return string The generated password.
+     * @throws \Exception If an error occurs during the process.
+     */
+    public static function generatePasswordFromWords(int $length = 4, string $separator = '-', bool $withNumber = true): string
+    {
+
+        $password = '';
+        $number = null;
+        $transliterator = \Transliterator::createFromRules(':: NFD; :: [:Nonspacing Mark:] Remove; :: Lower(); :: NFC;', \Transliterator::FORWARD);
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://trouve-mot.fr/api/random/' . $length);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+        $headers[] = 'Accept: application/json';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            return self::generatePassword();
+        }
+        curl_close($ch);
+
+        try {
+            $words = json_decode($result, true);
+        } catch (\Exception $e) {
+            return self::generatePassword();
+        }
+
+        if($words == null){return self::generatePassword();}
+
+        foreach ($words as $key => $word) {
+            if ($withNumber){$number = random_int(0,99);}
+            $word = $transliterator->transliterate($word['name']);
+            $password .= ucfirst($word).$number;
+            if($key !== array_key_last($words)){
+                $password .= $separator;
+            }
+        }
+        return $password;
+    }
+
     /**
      * Convert a string value of keywords into Array.
      *
