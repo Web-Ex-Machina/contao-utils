@@ -18,6 +18,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 
 class StringUtil extends \Contao\StringUtil
 {
+
     /**
      * Generate a random token.
      */
@@ -219,4 +220,5 @@ class StringUtil extends \Contao\StringUtil
 
         return $formattedValue;
     }
+
 }

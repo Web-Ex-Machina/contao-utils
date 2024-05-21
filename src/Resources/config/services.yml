@@ -1,8 +1,36 @@
 services:
-  wem.encryption:
+  wem.encryption_util:
     class: WEM\UtilsBundle\Classes\Encryption
     public: true
     arguments: [ "%wem_contao_encryption.encryption_key%", "%wem_contao_encryption.truncate_encryption_key%" ]
   WEM\UtilsBundle\Classes\Encryption:
-    alias: wem.encryption
+    alias: wem.encryption_util
+    public: true
+
+  wem.string_util:
+    class: WEM\UtilsBundle\Classes\StringUtil
+    public: true
+  WEM\UtilsBundle\Classes\StringUtil:
+    alias: wem.string_util
+    public: true
+
+  wem.date_util:
+    class: WEM\UtilsBundle\Classes\DateUtil
+    public: true
+  WEM\UtilsBundle\Classes\DateUtil:
+    alias: wem.date_util
+    public: true
+
+  wem.query_util:
+    class: WEM\UtilsBundle\Classes\QueryUtil
+    public: true
+  WEM\UtilsBundle\Classes\QueryUtil:
+    alias: wem.string_util
+    public: true
+
+  wem.file_util:
+    class: WEM\UtilsBundle\Classes\Files
+    public: true
+  WEM\UtilsBundle\Classes\Files:
+    alias: wem.file_util
     public: true
