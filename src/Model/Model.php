@@ -26,7 +26,7 @@ abstract class Model extends \Contao\Model
     /**
      * Default order column
      */
-    protected static string $strOrderColumn = "createdAt DESC";
+    protected static $strOrderColumn = "createdAt DESC";
 
     private static array $arrSearchFields = [];
 
