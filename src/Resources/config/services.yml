@@ -34,3 +34,10 @@ services:
   WEM\UtilsBundle\Classes\Files:
     alias: wem.file_util
     public: true
+
+  wem.scope_matcher:
+    class: WEM\UtilsBundle\Classes\ScopeMatcher
+    arguments:
+      $requestStack: '@request_stack'
+      $scopeMatcher : '@contao.routing.scope_matcher'
+    public: true
