@@ -132,4 +132,4 @@ class QueryBuilder
     }
 }
 
-class_alias(QueryBuilder::class, 'Model\QueryBuilder');
+//class_alias(QueryBuilder::class, 'Model\QueryBuilder');
