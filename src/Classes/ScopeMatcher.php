@@ -38,7 +38,7 @@ class ScopeMatcher
      */
     public function isBackend(): bool
     {
-        return $this->scopeMatcher->isBackendRequest($this->requestStack->getCurrentRequest());
+        return ( $this->requestStack->getCurrentRequest() !== null ) ? $this->scopeMatcher->isBackendRequest($this->requestStack->getCurrentRequest()): false;
     }
 
     /**
@@ -48,6 +48,6 @@ class ScopeMatcher
      */
     public function isFrontend(): bool
     {
-        return $this->scopeMatcher->isFrontendRequest($this->requestStack->getCurrentRequest());
+        return ( $this->requestStack->getCurrentRequest() !== null ) ? $this->scopeMatcher->isFrontendRequest($this->requestStack->getCurrentRequest()): false;
     }
 }
