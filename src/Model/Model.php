@@ -18,7 +18,7 @@ use Exception;
 use Contao\Database;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
-abstract class Model extends \Haste\Model\Model
+abstract class Model extends \Contao\Model
 {
     /**
      * Default order column
@@ -106,7 +106,7 @@ abstract class Model extends \Haste\Model\Model
                 $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
             }
 
-            if ($arrConfig['not']) {
+            if (array_key_exists('not',$arrConfig)) {
                 $arrColumns[] = $arrConfig['not'];
             }
 
