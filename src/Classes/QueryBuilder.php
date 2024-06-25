@@ -26,18 +26,15 @@ class QueryBuilder
      *
      * @return string The query string
      */
-    public static function find(array $arrOptions)
+    public static function find(array $arrOptions): string
     {
         $objBase = DcaExtractor::getInstance($arrOptions['table']);
 
         $strSelect = '*';
         if (array_key_exists('select',$arrOptions)) {
-            if (\is_array($arrOptions['select'])) {
-                $strSelect = implode(',', $arrOptions['select']);
-            } else {
-                $strSelect = $arrOptions['select'];
-            }
+            $strSelect = \is_array($arrOptions['select']) ? implode(',', $arrOptions['select']) : $arrOptions['select'];
         }
+
         $strJoin = '';
         if (array_key_exists('join',$arrOptions)) {
             $strJoin = implode('', $arrOptions['join']);
@@ -47,11 +44,7 @@ class QueryBuilder
             $strQuery = 'SELECT '.$strSelect.' FROM '.$arrOptions['table'].$strJoin;
         } else {
             $arrJoins = [];
-            if ('*' === $strSelect) {
-                $arrFields = [$arrOptions['table'].'.*'];
-            } else {
-                $arrFields = [$strSelect];
-            }
+            $arrFields = '*' === $strSelect ? [$arrOptions['table'].'.*'] : [$strSelect];
 
             if ('' !== $strJoin) {
                 $arrJoins[] = $strJoin;
@@ -122,7 +115,7 @@ class QueryBuilder
      *
      * @return string The query string
      */
-    public static function count(array $arrOptions)
+    public static function count(array $arrOptions): string
     {
         $strQuery = 'SELECT COUNT(*) AS count FROM '.$arrOptions['table'];
 
@@ -139,4 +132,4 @@ class QueryBuilder
     }
 }
 
-class_alias(QueryBuilder::class, 'Model\QueryBuilder');
+//class_alias(QueryBuilder::class, 'Model\QueryBuilder');
