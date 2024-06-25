@@ -29,7 +29,7 @@ class Command
      * @todo Allow the call of arguments to add (they could be added with the command but maybe it would be more appropriate to have them separated)
      * @todo Handle the system environment
      */
-    public static function exec($strCmd): void
+    public static function exec(string $strCmd): void
     {
         // Finally, clean the Contao cache
         $strConsolePath = System::getContainer()->getParameter('kernel.project_dir').' /vendor/bin/contao-console';
@@ -41,7 +41,7 @@ class Command
 
         $process = method_exists(Process::class, 'fromShellCommandline') ? Process::fromShellCommandline(
             $cmd
-        ) : new Process($cmd);
+        ) : new Process([$cmd]);
         $process->run();
 
         if (!$process->isSuccessful()) {

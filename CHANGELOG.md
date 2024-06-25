@@ -1,5 +1,7 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
+2.0.0 - 2024-06-24
+- code cleaning and PHP8-2 preparation.
 
 1.0.3 - 2024-03-28
 - Feat : ability to cancel a [DropZone](https://www.dropzone.dev/) upload

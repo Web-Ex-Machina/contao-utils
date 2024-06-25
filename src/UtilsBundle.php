@@ -14,8 +14,14 @@ declare(strict_types=1);
 
 namespace WEM\UtilsBundle;
 
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use WEM\UtilsBundle\DependencyInjection\WEMUtilsExtension;
 
 class UtilsBundle extends Bundle
 {
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        return new WEMUtilsExtension();
+    }
 }

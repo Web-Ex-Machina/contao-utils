@@ -1,14 +1,15 @@
 Extension "Utilities" for Contao Open Source CMS
 ======================
 
-Functionnalities
+Functionalities
 -------------------
- * Provide some utilies for develop Contao extensions
+ * Provide some utilities for develop Contao extensions
  * Class to execute commands
  * Class to generate strings
  * Extends Contao Query Builder
  * Extends Contao String Util
  * Extends Contao Model abstract class
+ * Provide a service for encrypt and decrypt data with blowfish
 
 System requirements
 -------------------
@@ -19,6 +20,18 @@ Installation
 ------------
 
 Clone the extension from Packagist (Contao 4 - Manager Edition) or directly from Composer
+
+Enable Encryption Service
+------------
+need to be explicitly enabled in your services.yml like this :
+```YML
+services:
+    WEM\UtilsBundle\Classes\Encryption:
+        arguments:
+            $secret: '%env(APP_SECRET)%'
+            $truncateKey: false
+```
+If you used the old contao service encryption, and you have some old data encrypted with, set truncateKey at true.
 
 Documentation
 -------------

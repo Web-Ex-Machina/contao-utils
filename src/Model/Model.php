@@ -16,77 +16,67 @@ namespace WEM\UtilsBundle\Model;
 
 use Exception;
 use Contao\Database;
+use Contao\Database\Result;
+use Contao\Database\Statement;
+use Contao\Model\Collection;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
 abstract class Model extends \Contao\Model
 {
     /**
      * Default order column
-     *
-     * @var string
      */
     protected static $strOrderColumn = "createdAt DESC";
+
+    private static array $arrSearchFields = [];
 
     /**
      * Find items, depends on the arguments.
      *
-     * @param array $arrConfig  [Request Config]
-     * @param int   $intLimit   [Query Limit]
-     * @param int   $intOffset  [Query Offset]
+     * @param array $arrConfig [Request Config]
+     * @param int $intLimit [Query Limit]
+     * @param int $intOffset [Query Offset]
      * @param array $arrOptions [Query Options]
      *
-     * @return \Contao\Model\Collection
+     * @throws Exception
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = [])
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): ?Collection
     {
-        try {
-            $t = static::$strTable;
-            $arrColumns = static::formatColumns($arrConfig);
-
-            if ($intLimit > 0) {
-                $arrOptions['limit'] = $intLimit;
-            }
-
-            if ($intOffset > 0) {
-                $arrOptions['offset'] = $intOffset;
-            }
-
-            if (!isset($arrOptions['order'])) {
-                $arrOptions['order'] = $t . "." . static::$strOrderColumn;
-            }
-
-            if (empty($arrColumns)) {
-                return static::findAll($arrOptions);
-            }
-
-            return static::findBy($arrColumns, null, $arrOptions);
-        } catch (Exception $e) {
-            throw $e;
+        $t = static::$strTable;
+        $arrColumns = static::formatColumns($arrConfig);
+        if ($intLimit > 0) {
+            $arrOptions['limit'] = $intLimit;
         }
+        if ($intOffset > 0) {
+            $arrOptions['offset'] = $intOffset;
+        }
+        if (!isset($arrOptions['order'])) {
+            $arrOptions['order'] = $t . "." . static::$strOrderColumn;
+        }
+        if ($arrColumns === []) {
+            return static::findAll($arrOptions);
+        }
+        return static::findBy($arrColumns, null, $arrOptions);
     }
 
     /**
      * Count items, depends on the arguments.
      *
-     * @param array [Request Config]
-     * @param array [Query Options]
+     * @param array $arrConfig [Request Config]
+     * @param array $arrOptions [Query Options]
      *
-     * @return int
+     * @throws Exception
      */
-    public static function countItems($arrConfig = [], array $arrOptions = [])
+    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
-        try {
-            $t = static::$strTable;
-            $arrColumns = static::formatColumns($arrConfig);
-
-            if (empty($arrColumns)) {
-                return static::countAll($arrOptions);
-            }
-
-            return static::countBy($arrColumns, null, $arrOptions);
-        } catch (Exception $e) {
-            throw $e;
+        $arrColumns = static::formatColumns($arrConfig);
+        if ($arrColumns === []) {
+            return static::countAll();
         }
+        return static::countBy($arrColumns, null, $arrOptions);
     }
 
     /**
@@ -94,43 +84,31 @@ abstract class Model extends \Contao\Model
      *
      * @param array $arrConfig [Configuration to format]
      *
-     * @return array
+     * @throws Exception
      */
-    public static function formatColumns($arrConfig)
+    public static function formatColumns(array $arrConfig): array
     {
-        try {
-            $t = static::$strTable;
-            $arrColumns = [];
-
-            foreach ($arrConfig as $c => $v) {
-                $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
-            }
-
-            if (array_key_exists('not',$arrConfig)) {
-                $arrColumns[] = $arrConfig['not'];
-            }
-
-            return $arrColumns;
-        } catch (Exception $e) {
-            throw $e;
+        $arrColumns = [];
+        foreach ($arrConfig as $c => $v) {
+            $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
+        if (array_key_exists('not',$arrConfig)) {
+            $arrColumns[] = $arrConfig['not'];
+        }
+        return $arrColumns;
     }
 
     /**
      * Format Search statement.
      *
+     * @param string $strField
      * @param string $varValue [Value to use]
-     *
-     * @return string
      */
-    public static function formatSearchStatement($strField, $varValue)
+    public static function formatSearchStatement(string $strField, string $varValue): string
     {
         $t = static::$strTable;
 
-        switch ($strField) {
-            default:
-                return "$t.$strField REGEXP '$varValue'";
-        }
+        return "$t.$strField REGEXP '$varValue'";
     }
 
     /**
@@ -139,10 +117,8 @@ abstract class Model extends \Contao\Model
      * @param string $strField    [Column to format]
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
         $arrColumns = [];
         $t = static::$strTable;
@@ -160,7 +136,7 @@ abstract class Model extends \Contao\Model
                     $arrSearchColumns[] = $varValue['column'];
                     $arrSearchKeywords = $varValue['keywords'];
                 } elseif (static::$arrSearchFields) {
-                    $arrSearchColumns = static::$arrSearchFields;
+                    $arrSearchColumns = static::$arrSearchFields; //TODO : Elle existe cette var ?
                     $arrSearchKeywords = $varValue;
                 } else {
                     break;
@@ -172,6 +148,7 @@ abstract class Model extends \Contao\Model
                     foreach ($arrSearchColumns as $f) {
                         $arrKeywords[] = static::formatSearchStatement($f, $k);
                     }
+
                     $arrColumns[] = '('.implode(' OR ', $arrKeywords).')';
                 }
 
@@ -184,6 +161,7 @@ abstract class Model extends \Contao\Model
                 } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.isActive = '' AND ($t.isActiveAt = 0 OR $t.isActiveAt >= ".time().") AND ($t.isActiveUntil = 0 OR $t.isActiveUntil <= ".time().')';
                 }
+
                 break;
 
             case 'invisible':
@@ -192,6 +170,7 @@ abstract class Model extends \Contao\Model
                 } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.invisible = ''";
                 }
+
                 break;
 
             // Checkboxes
@@ -201,6 +180,7 @@ abstract class Model extends \Contao\Model
                 } elseif (-1 === $varValue) {
                     $arrColumns[] = "$t.$strField = ''";
                 }
+
                 break;
 
             // Dates
@@ -230,18 +210,13 @@ abstract class Model extends \Contao\Model
      *
      * @param string $strField [Column]
      *
-     * @return \Contao\Model\Collection
+     * @return Result|Statement
+     * @throws Exception
      */
-    public static function findItemsGroupByOneField($strField)
+    public static function findItemsGroupByOneField(string $strField) //for php 8 only : Result|Statement
     {
-        try {
-            $t = static::$strTable;
-            $objResults = Database::getInstance()->prepare("SELECT $t.$strField FROM $t GROUP BY $t.$strField")->execute();
-
-            return $objResults;
-        } catch (Exception $e) {
-            throw $e;
-        }
+        $t = static::$strTable;
+        return Database::getInstance()->prepare(sprintf('SELECT %s.%s FROM %s GROUP BY %s.%s', $t, $strField, $t, $t, $strField))->execute();
     }
 
     /**
@@ -251,7 +226,7 @@ abstract class Model extends \Contao\Model
      *
      * @return string The query string
      */
-    protected static function buildFindQuery(array $arrOptions)
+    protected static function buildFindQuery(array $arrOptions): string
     {
         return QueryBuilder::find($arrOptions);
     }
@@ -263,7 +238,7 @@ abstract class Model extends \Contao\Model
      *
      * @return string The query string
      */
-    protected static function buildCountQuery(array $arrOptions)
+    protected static function buildCountQuery(array $arrOptions): string
     {
         return QueryBuilder::count($arrOptions);
     }

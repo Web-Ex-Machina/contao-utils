@@ -24,14 +24,12 @@ class Files
 {
     /**
      * Function to call in order to process files sent by DropZone
-     * 
-     * @param  String $folder   Folder path of uploaded files
-     * 
-     * @return Array
+     *
+     * @param string $folder Folder path of uploaded files
      */
-    public static function processDzFileUploads($folder)
+    public static function processDzFileUploads(string $folder): ?array
     {
-        if (!$_FILES || empty($_FILES)) {
+        if (empty($_FILES)) {
             return null;
         }
 
@@ -60,13 +58,13 @@ class Files
 
     /**
      * Function to process one DropZone file
-     * 
-     * @param  Array $file      Tmp File from PHP
-     * @param  String $folder   Folder path of uploaded file
-     * 
-     * @return Array
+     *
+     * @param array $file Tmp File from PHP
+     * @param string $folder Folder path of uploaded file
+     *
+     * @throws Exception
      */
-    public static function processDzFileUpload($file, $folder)
+    public static function processDzFileUpload(array $file, string $folder): array
     {
         $folder = self::addLastSlashToPathIfNeeded($folder);
 
@@ -100,7 +98,7 @@ class Files
             $session->set(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $_POST['dzchunkindex'], $_POST['dztotalchunkcount'] - 1), true);
 
             $blnMerge = true;
-            for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
+            for ($i = 0; $i < $_POST['dztotalchunkcount']; ++$i) {
                 if (!$session->get(sprintf('dzupload_%s_%s_%s', $_POST['dzuuid'], $i, $_POST['dztotalchunkcount'] - 1))) {
                     $blnMerge = false;
                     break;
@@ -112,8 +110,8 @@ class Files
                 $objMergedFile = new File($path);
                 $objMergedFile->truncate();
 
-                for ($i = 0; $i < $_POST['dztotalchunkcount']; $i++) {
-                    $objTmpFile = new File(self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], (int) $i));
+                for ($i = 0; $i < $_POST['dztotalchunkcount']; ++$i) {
+                    $objTmpFile = new File(self::buildPathForDzUploadChunk($folder, $_POST['dzuuid'], $i));
                     $objMergedFile->append($objTmpFile->getContent(), '');
                     $objTmpFile->delete();
                 }
@@ -130,36 +128,37 @@ class Files
 
         return $file;
     }
+
     /**
      * Cancel a DropZone file upload
-     * 
-     * @param  string       $folder            The folder in wich the upload file/chunks are
-     * @param  string       $dzuuid            The upload's UUID
-     * @param  int          $dztotalchunkcount The total amount of chunks
-     * 
+     *
+     * @param string $folder The folder in wich the upload file/chunks are
+     * @param string $dzuuid The upload's UUID
+     * @param int $dztotalchunkcount The total amount of chunks
+     *
+     * @throws Exception
      */
     public static function cancelDzFileUpload(string $folder, string $dzuuid, int $dztotalchunkcount): void
     {
-        for ($i = 0; $i < $dztotalchunkcount; $i++) {
-            $objTmpFile = new File(self::buildPathForDzUploadChunk($folder,$dzuuid, (int) $i));
+        for ($i = 0; $i < $dztotalchunkcount; ++$i) {
+            $objTmpFile = new File(self::buildPathForDzUploadChunk($folder,$dzuuid, $i));
             if($objTmpFile->exists()){
                 $objTmpFile->delete();
             }
         }
-        return;
     }
 
     /**
      * Contao Friendly Base64 Converter to FileSystem.
      *
-     * @param [String] $data   [Base64]
-     * @param [String] $folder [Folder name]
-     * @param [String] $file   [File name]
-     * @param [String] $type   [File type]
+     * @param string $data Base64 file
+     * @param string $folder folder name
+     * @param string $file file name
+     * @param string $type file type (extensions)
      *
-     * @return [Object] [File Object]
+     * @throws Exception
      */
-    public static function base64ToImage($data, $folder, $file, $type = '')
+    public static function base64ToImage(string $data, string $folder, string $file, string $type = ''): File
     {
         if (preg_match('/^data:image\/(\w+);base64,/', $data, $type)) {
             $data = substr($data, strpos($data, ',') + 1);
@@ -191,11 +190,9 @@ class Files
     /**
      * Contao Friendly Image Converter to Base64.
      *
-     * @param \Contao\FilesModel $objFile
-     *
-     * @return string
+     * @throws Exception
      */
-    public static function imageToBase64($objFile)
+    public static function imageToBase64(\Contao\FilesModel $objFile): string
     {
         $objFile = new File($objFile->path);
 
@@ -208,8 +205,7 @@ class Files
 
     /**
      * Add last slash to a path if needed
-     * 
-     * @param string $path
+     *
      */
     public static function addLastSlashToPathIfNeeded(string $path): string
     {
@@ -232,5 +228,23 @@ class Files
     public static function buildPathForDzUploadChunk(string $folder, string $dzuuid, int $chunkNo): string
     {
         return self::addLastSlashToPathIfNeeded($folder).$dzuuid.'_'.$chunkNo;
+    }
+
+    /**
+     * Check if a file is displaybale in browser.
+     *
+     * @param File $objFile The file to check
+     */
+    public static function isDisplayableInBrowser(File $objFile): bool
+    {
+        $mime = strtolower($objFile->mime);
+
+        if ('image/' === substr($mime, 0, 6)
+            || 'application/pdf' === $mime
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
