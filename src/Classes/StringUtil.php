@@ -205,20 +205,4 @@ class StringUtil extends \Contao\StringUtil
         return $randstring;
     }
 
-    public static function getFormStorageDataValueAsString($mixed): string
-    {
-        $value = self::deserialize($mixed);
-        if (\is_array($value)) {
-            $formattedValue = [];
-            foreach ($value as $valueChunk) {
-                $formattedValue[] = sprintf('%s (%s)', $valueChunk['label'], $valueChunk['value']);
-            }
-            $formattedValue = implode(',', $formattedValue);
-        } else {
-            $formattedValue = (string) $value;
-        }
-
-        return $formattedValue;
-    }
-
 }
