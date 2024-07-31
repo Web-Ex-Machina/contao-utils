@@ -44,35 +44,39 @@ class Encryption
     /**
      * Encrypts a given value using Blowfish cipher with CBC mode.
      *
-     * @param string $value The value to be encrypted.
+     * @param ?string $value The value to be encrypted.
      * @return string The encrypted value.
      */
-    public function encrypt(string $value = ''): string
+    public function encrypt(?string $value): ?string
     {
-        if (empty($value)) {exit();}
+        if ($value !== "") {
 
-        $cipher = new Blowfish('cbc');
-        $cipher->setKey($this->encryptionKey);
-        $cipher->setIV(self::IV);
+            $cipher = new Blowfish('cbc');
+            $cipher->setKey($this->encryptionKey);
+            $cipher->setIV(self::IV);
 
-        return $cipher->encrypt($value);
+            return $cipher->encrypt($value);
+        }
+        return null;
     }
 
     /**
      * Decrypts a value using Blowfish encryption.
      *
-     * @param string $value The encrypted value to decrypt.
+     * @param ?string $value The encrypted value to decrypt.
      * @return string The decrypted value.
      */
-    public function decrypt(string $value = ''): string
+    public function decrypt(?string $value): ?string
     {
-        if (empty($value)) {exit();}
+        if ($value !== "") {
 
-        $cipher = new Blowfish('cbc');
-        $cipher->setKey($this->encryptionKey);
-        $cipher->setIV(self::IV);
+            $cipher = new Blowfish('cbc');
+            $cipher->setKey($this->encryptionKey);
+            $cipher->setIV(self::IV);
 
-        return $cipher->decrypt($value);
+            return $cipher->decrypt($value);
+        }
+        return null;
     }
 
     /**
