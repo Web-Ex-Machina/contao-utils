@@ -26,8 +26,9 @@ abstract class Model extends \Contao\Model
     /**
      * Default order column
      */
-    protected static $strOrderColumn = "createdAt DESC";
+    protected static string $strOrderColumn = "createdAt DESC";
 
+    /** @var array<string> $arrSearchFields */
     private static array $arrSearchFields = [];
 
     /**
@@ -103,6 +104,8 @@ abstract class Model extends \Contao\Model
      *
      * @param string $strField
      * @param string $varValue [Value to use]
+     *
+     * @return string
      */
     public static function formatSearchStatement(string $strField, string $varValue): string
     {

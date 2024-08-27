@@ -20,7 +20,10 @@ use Contao\System;
 class CountriesUtil
 {
 
-    public static function getCountries()
+    /**
+     *  @return array<mixed>
+     */
+    public static function getCountries(): ?array
     {
         $arrCountries = System::getContainer()->get('contao.intl.countries')->getCountries();
 

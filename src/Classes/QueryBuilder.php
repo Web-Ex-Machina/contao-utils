@@ -22,7 +22,7 @@ class QueryBuilder
     /**
      * Build a query based on the given options.
      *
-     * @param array $arrOptions The options array
+     * @param array $arrOptions<mixed> The options array
      *
      * @return string The query string
      */

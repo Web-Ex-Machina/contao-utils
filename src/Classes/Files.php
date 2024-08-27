@@ -26,6 +26,7 @@ class Files
      * Function to call in order to process files sent by DropZone
      *
      * @param string $folder Folder path of uploaded files
+     * @return array<mixed>
      */
     public static function processDzFileUploads(string $folder): ?array
     {
@@ -59,8 +60,9 @@ class Files
     /**
      * Function to process one DropZone file
      *
-     * @param array $file Tmp File from PHP
+     * @param array<mixed> $file Tmp File from PHP
      * @param string $folder Folder path of uploaded file
+     * @return array<mixed>
      *
      * @throws Exception
      */
@@ -172,7 +174,7 @@ class Files
 
         $data = base64_decode($data);
 
-        if (false === $data) {
+        if (!$data) {
             throw new Exception('base64_decode failed');
         }
 

@@ -96,8 +96,8 @@ class StringUtil extends \Contao\StringUtil
         curl_close($ch);
 
         try {
-            $words = json_decode($result, true);
-        } catch (\Exception $e) {
+            $words = json_decode($result, true,512,JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
             return self::generatePassword();
         }
 
