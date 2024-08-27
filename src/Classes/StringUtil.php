@@ -90,14 +90,15 @@ class StringUtil extends \Contao\StringUtil
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         $result = curl_exec($ch);
-        if (curl_errno($ch)) {
+        if (curl_errno($ch) !== 0) {
             return self::generatePassword();
         }
+
         curl_close($ch);
 
         try {
             $words = json_decode($result, true,512,JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+        } catch (\JsonException $jsonException) {
             return self::generatePassword();
         }
 
@@ -105,12 +106,14 @@ class StringUtil extends \Contao\StringUtil
 
         foreach ($words as $key => $word) {
             if ($withNumber){$number = random_int(0,99);}
+
             $word = $transliterator->transliterate($word['name']);
             $password .= ucfirst($word).$number;
             if($key !== array_key_last($words)){
                 $password .= $separator;
             }
         }
+
         return $password;
     }
 

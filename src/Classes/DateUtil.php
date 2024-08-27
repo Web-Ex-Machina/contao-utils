@@ -27,9 +27,9 @@ class DateUtil
     public static function humanReadableDuration(int $duration): string
     {
         $minutes = (int) ($duration / 60000);
-        $duration = ($duration % 60000);
+        $duration %= 60000;
         $seconds = (int) ($duration / 1000);
-        $duration = ($duration % 1000);
+        $duration %= 1000;
         $ms = $duration;
 
         return sprintf('%02dm%02ds%03dms', $minutes, $seconds, $ms);

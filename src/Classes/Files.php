@@ -30,7 +30,7 @@ class Files
      */
     public static function processDzFileUploads(string $folder): ?array
     {
-        if (empty($_FILES)) {
+        if ($_FILES === []) {
             return null;
         }
 
@@ -174,7 +174,7 @@ class Files
 
         $data = base64_decode($data);
 
-        if (!$data) {
+        if ($data === '' || $data === '0') {
             throw new Exception('base64_decode failed');
         }
 
@@ -240,13 +240,6 @@ class Files
     public static function isDisplayableInBrowser(File $objFile): bool
     {
         $mime = strtolower($objFile->mime);
-
-        if ('image/' === substr($mime, 0, 6)
-            || 'application/pdf' === $mime
-        ) {
-            return true;
-        }
-
-        return false;
+        return 'image/' === substr($mime, 0, 6) || 'application/pdf' === $mime;
     }
 }

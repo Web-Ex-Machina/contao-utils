@@ -54,17 +54,13 @@ class QueryBuilder
 
             foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if ('eager' === $arrConfig['load'] || array_key_exists('eager',$arrOptions)) {
-                    if ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type']) {
-                        ++$intCount;
-                        $objRelated = DcaExtractor::getInstance($arrConfig['table']);
-
-                        foreach (array_keys($objRelated->getFields()) as $strField) {
-                            $arrFields[] = 'j'.$intCount.'.'.Database::quoteIdentifier($strField).' AS '.$strKey.'__'.$strField;
-                        }
-
-                        $arrJoins[] = ' LEFT JOIN '.$arrConfig['table']." j$intCount ON ".$arrOptions['table'].'.'.Database::quoteIdentifier($strKey)."=j$intCount.".$arrConfig['field'];
+                if (('eager' === $arrConfig['load'] || array_key_exists('eager',$arrOptions)) && ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type'])) {
+                    ++$intCount;
+                    $objRelated = DcaExtractor::getInstance($arrConfig['table']);
+                    foreach (array_keys($objRelated->getFields()) as $strField) {
+                        $arrFields[] = 'j'.$intCount.'.'.Database::quoteIdentifier($strField).' AS '.$strKey.'__'.$strField;
                     }
+                    $arrJoins[] = ' LEFT JOIN '.$arrConfig['table'].sprintf(' j%d ON ', $intCount).$arrOptions['table'].'.'.Database::quoteIdentifier($strKey).sprintf('=j%d.', $intCount).$arrConfig['field'];
                 }
             }
 

@@ -57,6 +57,7 @@ class Encryption
 
             return $cipher->encrypt($value);
         }
+
         return null;
     }
 
@@ -76,6 +77,7 @@ class Encryption
 
             return $cipher->decrypt($value);
         }
+
         return null;
     }
 

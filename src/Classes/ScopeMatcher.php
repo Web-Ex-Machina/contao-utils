@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace WEM\UtilsBundle\Classes;
 
 use Contao\CoreBundle\Routing\ScopeMatcher as ScopeMatcherBase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ScopeMatcher
@@ -38,7 +39,7 @@ class ScopeMatcher
      */
     public function isBackend(): bool
     {
-        return ( $this->requestStack->getCurrentRequest() !== null ) ? $this->scopeMatcher->isBackendRequest($this->requestStack->getCurrentRequest()): false;
+        return $this->requestStack->getCurrentRequest() instanceof Request && $this->scopeMatcher->isBackendRequest($this->requestStack->getCurrentRequest());
     }
 
     /**
@@ -48,6 +49,6 @@ class ScopeMatcher
      */
     public function isFrontend(): bool
     {
-        return ( $this->requestStack->getCurrentRequest() !== null ) ? $this->scopeMatcher->isFrontendRequest($this->requestStack->getCurrentRequest()): false;
+        return $this->requestStack->getCurrentRequest() instanceof Request && $this->scopeMatcher->isFrontendRequest($this->requestStack->getCurrentRequest());
     }
 }
