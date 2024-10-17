@@ -1,5 +1,13 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
+2.0.2 - 2024-10-17
+- fix for exncryption
+
+2.0.1 - 2024-08-05
+- fix: handle null input in Encryption class methods
+- feat: Add public alias for ScopeMatcher in services config
+
+
 2.0.0 - 2024-06-24
 - code cleaning and PHP8-2 preparation.
 

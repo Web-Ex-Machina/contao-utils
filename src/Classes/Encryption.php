@@ -49,6 +49,10 @@ class Encryption
      */
     public function encrypt(?string $value): ?string
     {
+        if(null === $value){
+            return null;
+        }
+        
         if ($value !== "") {
 
             $cipher = new Blowfish('cbc');
@@ -69,6 +73,10 @@ class Encryption
      */
     public function decrypt(?string $value): ?string
     {
+        if(null === $value){
+            return null;
+        }
+        
         if ($value !== "") {
 
             $cipher = new Blowfish('cbc');
