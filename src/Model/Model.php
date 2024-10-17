@@ -29,7 +29,7 @@ abstract class Model extends \Contao\Model
     protected static $strOrderColumn = "createdAt DESC";
 
     /** @var array<string> $arrSearchFields */
-    private static $arrSearchFields = [];
+    protected static $arrSearchFields = [];
 
     /**
      * Find items, depends on the arguments.
