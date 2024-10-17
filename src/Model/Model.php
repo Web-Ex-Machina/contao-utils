@@ -26,10 +26,10 @@ abstract class Model extends \Contao\Model
     /**
      * Default order column
      */
-    protected static string $strOrderColumn = "createdAt DESC";
+    protected static $strOrderColumn = "createdAt DESC";
 
     /** @var array<string> $arrSearchFields */
-    private static array $arrSearchFields = [];
+    private static $arrSearchFields = [];
 
     /**
      * Find items, depends on the arguments.
