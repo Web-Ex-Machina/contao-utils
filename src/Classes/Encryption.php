@@ -97,6 +97,9 @@ class Encryption
      */
     public function encrypt_b64(string $data): string
     {
+        if(empty($data)) {
+            return $data;
+        }
         $data_secured = $this->encrypt($data);
         return base64_encode($data_secured);
     }
@@ -109,6 +112,9 @@ class Encryption
      */
     public function decrypt_b64(string $data64): string
     {
+        if(empty($data64)) {
+            return $data64;
+        }
         $data = \base64_decode($data64);
         return $this->decrypt($data);
     }
