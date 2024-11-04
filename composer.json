@@ -1,6 +1,8 @@
 {
     "name": "webexmachina/contao-utils",
     "description": "Utilities for Contao Open Source CMS",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "keywords": ["utilities", "development", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
@@ -42,6 +44,7 @@
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "rector/rector": "^1.1"
+        "rector/rector": "^1.1",
+        "contao/contao-rector": "dev-main"
     }
 }

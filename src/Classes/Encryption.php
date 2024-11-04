@@ -44,45 +44,62 @@ class Encryption
     /**
      * Encrypts a given value using Blowfish cipher with CBC mode.
      *
-     * @param string $value The value to be encrypted.
+     * @param ?string $value The value to be encrypted.
      * @return string The encrypted value.
      */
-    public function encrypt(string $value = ''): string
+    public function encrypt(?string $value): ?string
     {
-        if (empty($value)) {exit();}
+        if(null === $value){
+            return null;
+        }
+        
+        if ($value !== "") {
 
-        $cipher = new Blowfish('cbc');
-        $cipher->setKey($this->encryptionKey);
-        $cipher->setIV(self::IV);
+            $cipher = new Blowfish('cbc');
+            $cipher->setKey($this->encryptionKey);
+            $cipher->setIV(self::IV);
 
-        return $cipher->encrypt($value);
+            return $cipher->encrypt($value);
+        }
+
+        return null;
     }
 
     /**
      * Decrypts a value using Blowfish encryption.
      *
-     * @param string $value The encrypted value to decrypt.
+     * @param ?string $value The encrypted value to decrypt.
      * @return string The decrypted value.
      */
-    public function decrypt(string $value = ''): string
+    public function decrypt(?string $value): ?string
     {
-        if (empty($value)) {exit();}
+        if(null === $value){
+            return null;
+        }
+        
+        if ($value !== "") {
 
-        $cipher = new Blowfish('cbc');
-        $cipher->setKey($this->encryptionKey);
-        $cipher->setIV(self::IV);
+            $cipher = new Blowfish('cbc');
+            $cipher->setKey($this->encryptionKey);
+            $cipher->setIV(self::IV);
 
-        return $cipher->decrypt($value);
+            return $cipher->decrypt($value);
+        }
+
+        return null;
     }
 
     /**
      * Encrypts the given data and returns it as a base64 encoded string.
      *
-     * @param string $data The data to be encrypted.
-     * @return string The encrypted data as a base64 encoded string.
+     * @param ?string $data The data to be encrypted.
+     * @return ?string The encrypted data as a base64 encoded string.
      */
-    public function encrypt_b64(string $data): string
+    public function encrypt_b64(?string $data): ?string
     {
+        if(empty($data)) {
+            return $data;
+        }
         $data_secured = $this->encrypt($data);
         return base64_encode($data_secured);
     }
@@ -90,11 +107,14 @@ class Encryption
     /**
      * Decrypts base64 encoded data.
      *
-     * @param string $data64 The base64 encoded data.
-     * @return string The decrypted data.
+     * @param ?string $data64 The base64 encoded data.
+     * @return ?string The decrypted data.
      */
-    public function decrypt_b64(string $data64): string
+    public function decrypt_b64(?string $data64): ?string
     {
+        if(empty($data64)) {
+            return $data64;
+        }
         $data = \base64_decode($data64);
         return $this->decrypt($data);
     }

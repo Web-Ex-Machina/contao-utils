@@ -41,3 +41,6 @@ services:
       $requestStack: '@request_stack'
       $scopeMatcher : '@contao.routing.scope_matcher'
     public: true
+  WEM\UtilsBundle\Classes\ScopeMatcher:
+    alias: wem.scope_matcher
+    public: true

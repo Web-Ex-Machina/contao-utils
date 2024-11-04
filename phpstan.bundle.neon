@@ -1,4 +1,7 @@
 parameters:
-  phpVersion: 80200 # PHP 8.2
-  scanDirectories:
-    - ./vendor/contao
+    phpVersion: 80200 # PHP 8.2
+    level: 5
+    paths:
+        - src
+    scanDirectories:
+        - ./vendor/contao

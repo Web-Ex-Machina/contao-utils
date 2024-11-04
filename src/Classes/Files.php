@@ -26,10 +26,11 @@ class Files
      * Function to call in order to process files sent by DropZone
      *
      * @param string $folder Folder path of uploaded files
+     * @return array<mixed>
      */
     public static function processDzFileUploads(string $folder): ?array
     {
-        if (empty($_FILES)) {
+        if ($_FILES === []) {
             return null;
         }
 
@@ -59,8 +60,9 @@ class Files
     /**
      * Function to process one DropZone file
      *
-     * @param array $file Tmp File from PHP
+     * @param array<mixed> $file Tmp File from PHP
      * @param string $folder Folder path of uploaded file
+     * @return array<mixed>
      *
      * @throws Exception
      */
@@ -172,7 +174,7 @@ class Files
 
         $data = base64_decode($data);
 
-        if (false === $data) {
+        if ($data === '' || $data === '0') {
             throw new Exception('base64_decode failed');
         }
 
@@ -238,13 +240,6 @@ class Files
     public static function isDisplayableInBrowser(File $objFile): bool
     {
         $mime = strtolower($objFile->mime);
-
-        if ('image/' === substr($mime, 0, 6)
-            || 'application/pdf' === $mime
-        ) {
-            return true;
-        }
-
-        return false;
+        return 'image/' === substr($mime, 0, 6) || 'application/pdf' === $mime;
     }
 }

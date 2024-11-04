@@ -37,6 +37,7 @@ class WEMUtilsExtension extends Extension
         );
 
         $loader->load('services.yml');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('wem_contao_encryption.encryption_key', $config['encryption_key']);

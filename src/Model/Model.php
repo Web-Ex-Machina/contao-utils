@@ -28,7 +28,8 @@ abstract class Model extends \Contao\Model
      */
     protected static $strOrderColumn = "createdAt DESC";
 
-    private static array $arrSearchFields = [];
+    /** @var array<string> $arrSearchFields */
+    protected static $arrSearchFields = [];
 
     /**
      * Find items, depends on the arguments.
@@ -50,15 +51,19 @@ abstract class Model extends \Contao\Model
         if ($intLimit > 0) {
             $arrOptions['limit'] = $intLimit;
         }
+
         if ($intOffset > 0) {
             $arrOptions['offset'] = $intOffset;
         }
+
         if (!isset($arrOptions['order'])) {
             $arrOptions['order'] = $t . "." . static::$strOrderColumn;
         }
+
         if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
+
         return static::findBy($arrColumns, null, $arrOptions);
     }
 
@@ -76,6 +81,7 @@ abstract class Model extends \Contao\Model
         if ($arrColumns === []) {
             return static::countAll();
         }
+
         return static::countBy($arrColumns, null, $arrOptions);
     }
 
@@ -92,17 +98,16 @@ abstract class Model extends \Contao\Model
         foreach ($arrConfig as $c => $v) {
             $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
+
         if (array_key_exists('not',$arrConfig)) {
             $arrColumns[] = $arrConfig['not'];
         }
+
         return $arrColumns;
     }
 
     /**
      * Format Search statement.
-     *
-     * @param string $strField
-     * @param string $varValue [Value to use]
      */
     public static function formatSearchStatement(string $strField, string $varValue): string
     {
@@ -141,16 +146,12 @@ abstract class Model extends \Contao\Model
                 } else {
                     break;
                 }
-
-                if (!empty($arrSearchColumns)) {
-                    $k = is_array($arrSearchKeywords) ? implode('|', $arrSearchKeywords) : $arrSearchKeywords;
-                    $arrKeywords = [];
-                    foreach ($arrSearchColumns as $f) {
-                        $arrKeywords[] = static::formatSearchStatement($f, $k);
-                    }
-
-                    $arrColumns[] = '('.implode(' OR ', $arrKeywords).')';
+                $k = is_array($arrSearchKeywords) ? implode('|', $arrSearchKeywords) : $arrSearchKeywords;
+                $arrKeywords = [];
+                foreach ($arrSearchColumns as $f) {
+                    $arrKeywords[] = static::formatSearchStatement($f, $k);
                 }
+                $arrColumns[] = '('.implode(' OR ', $arrKeywords).')';
 
                 break;
 
