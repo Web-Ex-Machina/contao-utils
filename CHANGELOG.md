@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.0.6 - 2024-11-04
+- fix for encryption
+
 2.0.5 - 2024-10-28
 - fix: `encrypt_b64` & `decrypt_b64` now works if an empty string is given
 - fix for exncryption
