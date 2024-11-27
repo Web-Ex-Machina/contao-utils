@@ -242,7 +242,16 @@ abstract class Model extends \Contao\Model
             // Default behaviour
             case 'ptable':
             default:
-                $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));       
+                // HOOK: add custom format statement logic for default behaviour
+                if (isset($GLOBALS['WEM_HOOKS']['formatStatementDefault']) && \is_array($GLOBALS['WEM_HOOKS']['formatStatementDefault']))
+                {
+                    foreach ($GLOBALS['WEM_HOOKS']['formatStatementDefault'] as $callback)
+                    {
+                        $arrColumns = System::importStatic($callback[0])->{$callback[1]}($arrColumns, $strField, $varValue, $strOperator, $t);
+                    }
+                }else{
+                    $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));       
+                }
         }
 
         // HOOK: add custom format statement logic
