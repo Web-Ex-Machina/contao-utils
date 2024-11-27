@@ -170,19 +170,6 @@ abstract class Model extends \Contao\Model
         $arrColumns = [];
         $t = static::$strTable;
 
-        // HOOK: add custom format statement logic
-        if (isset($GLOBALS['WEM_HOOKS']['formatStatement']) && \is_array($GLOBALS['WEM_HOOKS']['formatStatement']))
-        {
-            foreach ($GLOBALS['WEM_HOOKS']['formatStatement'] as $callback)
-            {
-                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($strField, $varValue, $strOperator, $t);
-
-                if (null !== $arrColumns) {
-                    return $arrColumns;
-                }
-            }
-        }
-
         switch ($strField) {
             // Integer fields
             case 'pid':
@@ -255,7 +242,16 @@ abstract class Model extends \Contao\Model
             // Default behaviour
             case 'ptable':
             default:
-                $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));
+                $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));       
+        }
+
+        // HOOK: add custom format statement logic
+        if (isset($GLOBALS['WEM_HOOKS']['formatStatement']) && \is_array($GLOBALS['WEM_HOOKS']['formatStatement']))
+        {
+            foreach ($GLOBALS['WEM_HOOKS']['formatStatement'] as $callback)
+            {
+                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($arrColumns, $strField, $varValue, $strOperator, $t);
+            }
         }
 
         return $arrColumns;
