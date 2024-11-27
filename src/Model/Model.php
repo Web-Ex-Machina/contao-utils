@@ -66,7 +66,7 @@ abstract class Model extends \Contao\Model
         {
             foreach ($GLOBALS['WEM_HOOKS']['preFindItems'] as $callback)
             {
-                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($t, $arrConfig, $intLimit, $intOffset, $arrOptions);
+                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($t, $arrColumns, $arrConfig, $intLimit, $intOffset, $arrOptions);
             }
         }
 
