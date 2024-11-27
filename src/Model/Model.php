@@ -242,12 +242,12 @@ abstract class Model extends \Contao\Model
             // Default behaviour
             case 'ptable':
             default:
-                // HOOK: add custom format statement logic for default behaviour
-                if (isset($GLOBALS['WEM_HOOKS']['formatStatementDefault']) && \is_array($GLOBALS['WEM_HOOKS']['formatStatementDefault']))
+                // HOOK: add custom format statement logic for switch's default behaviour
+                if (isset($GLOBALS['WEM_HOOKS']['formatDefaultStatement']) && \is_array($GLOBALS['WEM_HOOKS']['formatDefaultStatement']))
                 {
-                    foreach ($GLOBALS['WEM_HOOKS']['formatStatementDefault'] as $callback)
+                    foreach ($GLOBALS['WEM_HOOKS']['formatDefaultStatement'] as $callback)
                     {
-                        $arrColumns = System::importStatic($callback[0])->{$callback[1]}($arrColumns, $strField, $varValue, $strOperator, $t);
+                        $arrColumns = System::importStatic($callback[0])->{$callback[1]}($strField, $varValue, $strOperator, $t);
                     }
                 }else{
                     $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));       
