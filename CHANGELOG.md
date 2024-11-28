@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.1.0 - 2024-11-28
+- Feat : add hooks in `Model`
+
 2.0.6 - 2024-11-04
 - fix for encryption
 

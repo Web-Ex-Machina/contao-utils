@@ -19,6 +19,7 @@ use Contao\Database;
 use Contao\Database\Result;
 use Contao\Database\Statement;
 use Contao\Model\Collection;
+use Contao\System;
 use WEM\UtilsBundle\Classes\QueryBuilder;
 
 abstract class Model extends \Contao\Model
@@ -60,11 +61,31 @@ abstract class Model extends \Contao\Model
             $arrOptions['order'] = $t . "." . static::$strOrderColumn;
         }
 
-        if ($arrColumns === []) {
-            return static::findAll($arrOptions);
+        // HOOK: add pre find items logic
+        if (isset($GLOBALS['WEM_HOOKS']['preFindItems']) && \is_array($GLOBALS['WEM_HOOKS']['preFindItems']))
+        {
+            foreach ($GLOBALS['WEM_HOOKS']['preFindItems'] as $callback)
+            {
+                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($t, $arrColumns, $arrConfig, $intLimit, $intOffset, $arrOptions);
+            }
         }
 
-        return static::findBy($arrColumns, null, $arrOptions);
+        if ($arrColumns === []) {
+            $objCollection = static::findAll($arrOptions);
+        } else {
+            $objCollection = static::findBy($arrColumns, null, $arrOptions);
+        }
+
+        // HOOK: add post find items logic
+        if (isset($GLOBALS['WEM_HOOKS']['postFindItems']) && \is_array($GLOBALS['WEM_HOOKS']['postFindItems']))
+        {
+            foreach ($GLOBALS['WEM_HOOKS']['postFindItems'] as $callback)
+            {
+                $objCollection = System::importStatic($callback[0])->{$callback[1]}($objCollection, $t, $arrColumns, $arrConfig, $intLimit, $intOffset, $arrOptions);
+            }
+        }
+
+        return $objCollection;
     }
 
     /**
@@ -78,11 +99,32 @@ abstract class Model extends \Contao\Model
     public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
         $arrColumns = static::formatColumns($arrConfig);
-        if ($arrColumns === []) {
-            return static::countAll();
+
+        // HOOK: add pre count items logic
+        if (isset($GLOBALS['WEM_HOOKS']['preCountItems']) && \is_array($GLOBALS['WEM_HOOKS']['preCountItems']))
+        {
+            foreach ($GLOBALS['WEM_HOOKS']['preCountItems'] as $callback)
+            {
+                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($t, $arrColumns, $arrConfig, $arrOptions);
+            }
         }
 
-        return static::countBy($arrColumns, null, $arrOptions);
+        if ($arrColumns === []) {
+            $intCount = static::countAll();
+        } else {
+            $intCount = static::countBy($arrColumns, null, $arrOptions);
+        }
+
+        // HOOK: add post find items logic
+        if (isset($GLOBALS['WEM_HOOKS']['postCountItems']) && \is_array($GLOBALS['WEM_HOOKS']['postCountItems']))
+        {
+            foreach ($GLOBALS['WEM_HOOKS']['postCountItems'] as $callback)
+            {
+                $intCount = System::importStatic($callback[0])->{$callback[1]}($intCount, $t, $arrColumns, $arrConfig, $arrOptions);
+            }
+        }
+
+        return $intCount;
     }
 
     /**
@@ -200,7 +242,25 @@ abstract class Model extends \Contao\Model
             // Default behaviour
             case 'ptable':
             default:
-                $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));
+                // HOOK: add custom format statement logic for switch's default behaviour
+                if (isset($GLOBALS['WEM_HOOKS']['formatDefaultStatement']) && \is_array($GLOBALS['WEM_HOOKS']['formatDefaultStatement']))
+                {
+                    foreach ($GLOBALS['WEM_HOOKS']['formatDefaultStatement'] as $callback)
+                    {
+                        $arrColumns = System::importStatic($callback[0])->{$callback[1]}($strField, $varValue, $strOperator, $t);
+                    }
+                }else{
+                    $arrColumns[] = sprintf("$t.%s %s '%s'", $strField, $strOperator, \addslashes((string) $varValue));       
+                }
+        }
+
+        // HOOK: add custom format statement logic
+        if (isset($GLOBALS['WEM_HOOKS']['formatStatement']) && \is_array($GLOBALS['WEM_HOOKS']['formatStatement']))
+        {
+            foreach ($GLOBALS['WEM_HOOKS']['formatStatement'] as $callback)
+            {
+                $arrColumns = System::importStatic($callback[0])->{$callback[1]}($arrColumns, $strField, $varValue, $strOperator, $t);
+            }
         }
 
         return $arrColumns;
