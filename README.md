@@ -38,6 +38,7 @@ Documentation
 
  * [Change log][1]
  * [Git repository][2]
+ * [Hooks][4]
 
 License
 -------
@@ -59,3 +60,4 @@ You can get the extension with this repository URL : [Github][2]
 [1]: CHANGELOG.md
 [2]: https://github.com/web-ex-machina/contao-utils
 [3]: https://github.com/web-ex-machina/contao-utils/issues
+[4]: /docs/HOOKS.md
