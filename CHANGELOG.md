@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.1.1 - 2025-01-21
+- Fix : `WEM\UtilsBundle\Classes\Files::imageToBase64` can take `\Contao\FilesModel|\Contao\File $objFile` argument
+
 2.1.0 - 2024-11-28
 - Feat : add hooks in `Model`
 
