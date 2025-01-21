@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Contao Utilities for Contao Open Source CMS
- * Copyright (c) 2019-2023 Web ex Machina
+ * Copyright (c) 2019-2025 Web ex Machina
  *
  * @category ContaoBundle
  * @package  Web-Ex-Machina/contao-utils
@@ -19,6 +19,7 @@ use Contao\Config;
 use Contao\File;
 use Contao\Input;
 use Contao\System;
+use InvalidArgumentException;
 
 class Files
 {
@@ -192,11 +193,16 @@ class Files
     /**
      * Contao Friendly Image Converter to Base64.
      *
+     * @param  \Contao\FilesModel|\Contao\File $objFile  The file
      * @throws Exception
      */
-    public static function imageToBase64(\Contao\FilesModel $objFile): string
+    public static function imageToBase64($objFile): string
     {
-        $objFile = new File($objFile->path);
+        if(is_a($objFile,\Contao\FilesModel::class)){
+            $objFile = new File($objFile->path);
+        }elseif(!is_a($objFile,\Contao\File::class)){
+            throw new InvalidArgumentException('$objFile must be an instance of \Contao\FilesModel or \Contao\File');
+        }
 
         return sprintf(
             'data:image/%s;base64,%s',
