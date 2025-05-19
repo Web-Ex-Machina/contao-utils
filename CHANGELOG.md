@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.2.0 - 2025-05-19
+- Feat : Add a ValidatorUtil Class to extends Contao Validator
+
 2.1.1 - 2025-01-21
 - Fix : `WEM\UtilsBundle\Classes\Files::imageToBase64` can take `\Contao\FilesModel|\Contao\File $objFile` argument
 
