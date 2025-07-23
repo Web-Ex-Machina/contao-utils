@@ -6,10 +6,16 @@ Functionalities
  * Provide some utilities for develop Contao extensions
  * Class to execute commands
  * Class to generate strings
+ * Class ScopeMatcher to check if request is backend/frontend
  * Extends Contao Query Builder
  * Extends Contao String Util
  * Extends Contao Model abstract class
  * Provide a service for encrypt and decrypt data with blowfish
+ * Provide a Twig Extension to add Twig features as functions and filters
+
+Twig Filters
+-------------------
+ * `preg_replace`: call the PHP function `preg_replace` with two string arguments: `pattern` and `replace`
 
 System requirements
 -------------------
