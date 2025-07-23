@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.3.0 - 2025-07-23
+- Feat : Add a Twig Extension class + a Twig Filter to execute `preg_replace` functions 
+
 2.2.0 - 2025-05-19
 - Feat : Add a ValidatorUtil Class to extends Contao Validator
 
