@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    autoconfigure: true
+
   wem.encryption_util:
     class: WEM\UtilsBundle\Classes\Encryption
     public: true
@@ -44,3 +47,15 @@ services:
   WEM\UtilsBundle\Classes\ScopeMatcher:
     alias: wem.scope_matcher
     public: true
+
+  wem.twig.extension:
+    class: WEM\UtilsBundle\Twig\Extension\WemExtension
+    public: true
+    arguments:
+      - '@twig'
+      - '@contao.twig.filesystem_loader'
+      - '@contao.csrf.token_manager'
+      - '@contao.twig.global.variable'
+  
+  wem.twig.preg_replace_runtime:
+    class: WEM\UtilsBundle\Twig\Runtime\PregReplaceRuntime
