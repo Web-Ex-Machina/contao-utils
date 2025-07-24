@@ -22,6 +22,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use WEM\UtilsBundle\Twig\Runtime\PregReplaceRuntime;
+use WEM\UtilsBundle\Twig\Runtime\HtmlEntityDecodeRuntime;
 
 /**
  * @experimental
@@ -42,6 +43,11 @@ final class WemExtension extends AbstractExtension
             new TwigFilter(
                 'preg_replace',
                 [PregReplaceRuntime::class, 'pregReplace'],
+                ['is_safe' => ['html']],
+            ),
+            new TwigFilter(
+                'html_entity_decode',
+                [HtmlEntityDecodeRuntime::class, 'htmlEntityDecode'],
                 ['is_safe' => ['html']],
             ),
         ];
