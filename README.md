@@ -16,6 +16,7 @@ Functionalities
 Twig Filters
 -------------------
  * `preg_replace`: call the PHP function `preg_replace` with two string arguments: `pattern` and `replace`
+ * `html_entity_decode`: call the PHP function `html_entity_decode` with a string argument: `string`
 
 System requirements
 -------------------
