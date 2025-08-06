@@ -55,7 +55,8 @@ services:
       - '@twig'
       - '@contao.twig.filesystem_loader'
       - '@contao.csrf.token_manager'
-      - '@contao.twig.global.variable'
   
   wem.twig.preg_replace_runtime:
     class: WEM\UtilsBundle\Twig\Runtime\PregReplaceRuntime
+  wem.twig.html_entity_decode_runtime:
+    class: WEM\UtilsBundle\Twig\Runtime\HtmlEntityDecodeRuntime
