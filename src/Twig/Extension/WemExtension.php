@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace WEM\UtilsBundle\Twig\Extension;
 
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
-use Contao\CoreBundle\Twig\Global\ContaoVariable;
 use Contao\CoreBundle\Twig\Loader\ContaoFilesystemLoader;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -33,7 +32,6 @@ final class WemExtension extends AbstractExtension
         private readonly Environment $environment,
         private readonly ContaoFilesystemLoader $filesystemLoader,
         ContaoCsrfTokenManager $tokenManager,
-        private readonly ContaoVariable $contaoVariable,
     ) {
     }
 
