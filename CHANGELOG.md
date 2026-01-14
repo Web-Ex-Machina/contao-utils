@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.3.1 - 2026-01-14
+- Fix : `WEM\UtilsBundle\Classes\Files::base64ToImage` works in Contao 4.x & 5.x
+
 2.3.0 - 2025-07-23
 - Feat : Add a Twig Extension class + a Twig Filter to execute `preg_replace` functions 
 
