@@ -1,6 +1,16 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.3.3 - 2026-08-13
+- Fix : `WEM\UtilsBundle\Classes\QueryBuilder::find` warning on unexisting array key
+
+2.3.2 - 2026-01-14
+- Fix : `WEM\UtilsBundle\Classes\Files::base64ToImage` works in Contao 4.x & 5.x
+
+2.3.1 - 2025-08-06
+- Feat : add twig filter html_entity_decode by @SeptimusVII in #37
+- Fix : compatibility break with an unused variable (Contao global Twig variable, only available in Contao 5.3)
+
 2.3.0 - 2025-07-23
 - Feat : Add a Twig Extension class + a Twig Filter to execute `preg_replace` functions 
 

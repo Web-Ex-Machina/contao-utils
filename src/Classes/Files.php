@@ -19,6 +19,7 @@ use Contao\Config;
 use Contao\File;
 use Contao\Input;
 use Contao\System;
+use Contao\CoreBundle\ContaoCoreBundle;
 use InvalidArgumentException;
 
 class Files
@@ -168,8 +169,10 @@ class Files
             $type = strtolower($type[1]); // jpg, png, gif
             $data = str_replace(' ', '+', $data);
         }
+        
+        $validTypes = version_compare(ContaoCoreBundle::getVersion(), '5.0', '<') ? explode(",", Config::get('validImageTypes')) : System::getContainer()->getParameter('contao.image.valid_extensions');
 
-        if (!$type || !\in_array($type, explode(",", Config::get('validImageTypes')))) {
+        if (!$type || !\in_array($type, $validTypes)) {
             throw new \Exception('No valid type found');
         }
 
