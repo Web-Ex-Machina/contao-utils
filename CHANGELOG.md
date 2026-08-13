@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.3.3 - 2026-08-13
+- Fix : `WEM\UtilsBundle\Classes\QueryBuilder::find` warning on unexisting array key
+
 2.3.2 - 2026-01-14
 - Fix : `WEM\UtilsBundle\Classes\Files::base64ToImage` works in Contao 4.x & 5.x
 
