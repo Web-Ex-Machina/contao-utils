@@ -78,22 +78,12 @@ class PdfUtil
             $exec_command .= "-r" . $resolution . " ";
             $exec_command .= "-sOutputFile=" . $oPath . " '" . $iPath . "'";
 
-            echo "Executing command...\n";
             exec($exec_command, $co, $rv);
-    
-            foreach ($co as $line ) {
-                echo $line . "\n";
-            }
 
             if (!$rv) {
-                echo "Preview created successfully!!\n";
-
                 return $oPath;
             }
             
-            
-            echo "Error while creating the preview.\n";
-
             return null;
         }
 
