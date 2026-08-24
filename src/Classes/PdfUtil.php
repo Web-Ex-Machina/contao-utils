@@ -69,6 +69,10 @@ class PdfUtil
             }
         }
 
+        // Make path absolutes
+        $iPath = Files::getAbsolutePath($iPath);
+        $oPath = Files::getAbsolutePath($oPath);
+
         // Ghostscript
         \system( "which gs > /dev/null", $retval);
         if ($useGhostScript && 0 === (int) $retval) {
@@ -95,9 +99,9 @@ class PdfUtil
         $im->setImageFormat($oFormat);
         $im->thumbnailImage($resolution, 0);
 
-        $objFileThumbnail = new ContaoFile($oPath);
-        $objFileThumbnail->write((string) $im);
-        $objFileThumbnail->close();
+        $objFile = new ContaoFile(Files::getRelativePath($oPath));
+        $objFile->write((string) $im);
+        $objFile->close();
 
         return $oPath;
     }

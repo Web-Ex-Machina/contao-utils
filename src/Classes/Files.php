@@ -21,6 +21,7 @@ use Contao\Input;
 use Contao\System;
 use Contao\CoreBundle\ContaoCoreBundle;
 use InvalidArgumentException;
+use Symfony\Component\Filesystem\Path;
 
 class Files
 {
@@ -262,5 +263,33 @@ class Files
     public static function getExtensionFromFilename(string $name): string
     {
         return substr($name, strrpos($name, '.') + 1);
+    }
+
+    /**
+     * Return the file absolute path
+     * 
+     * @param string $path
+     * 
+     * @return string
+     */
+    public static function getAbsolutePath(string $path): string
+    {
+        $strRootDir = System::getContainer()->getParameter('kernel.project_dir');
+
+        return Path::makeAbsolute($path, $strRootDir);
+    }
+
+    /**
+     * Return the file relative path
+     * 
+     * @param string $path
+     * 
+     * @return string
+     */
+    public static function getRelativePath(string $path): string
+    {
+        $strRootDir = System::getContainer()->getParameter('kernel.project_dir');
+
+        return Path::makeRelative($path, $strRootDir);
     }
 }
