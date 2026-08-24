@@ -79,12 +79,12 @@ class PdfUtil
 
         // Check if output file exists
         if (!$eraseIfExists && Files::exists($oPath)) {
-            return $oPath;
+            return Files::getRelativePath($oPath);
         }
 
         // Ghostscript
-        \system( "which gs > /dev/null", $retval);
-        if ($useGhostScript && 0 === (int) $retval) {
+        $gsVersion = shell_exec("gs --version");
+        if ($useGhostScript && 0 !== (int) $gsVersion) {
             $exec_command  = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=" . $oFormat . " ";
             $exec_command .= "-dTextAlphaBits=". $antialiasing . " -dGraphicsAlphaBits=" . $antialiasing . " ";
             $exec_command .= "-dFirstPage=" . $page . " -dLastPage=" . $page . " ";
@@ -94,7 +94,7 @@ class PdfUtil
             exec($exec_command, $co, $rv);
 
             if (!$rv) {
-                return $oPath;
+                return Files::getRelativePath($oPath);
             }
             
             return null;
