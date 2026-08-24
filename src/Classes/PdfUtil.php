@@ -100,7 +100,7 @@ class PdfUtil
         // Else use Imagick
         $im = new \Imagick();
         $im->setResolution($resolution, $resolution);
-        $im->readImage('../'.$iPath.('pdf' === $iExt ? '[0]' : ''));    // [0] for the first page
+        $im->readImage($iPath . '[' . $page - 1 . ']');
         $im = $im->flattenImages();
         $im->setImageFormat($oFormat);
         $im->thumbnailImage($resolution, 0);
