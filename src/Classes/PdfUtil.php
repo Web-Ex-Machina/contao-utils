@@ -38,6 +38,7 @@ class PdfUtil
         int $antialiasing = 4,
         int $resolution = 300,
         bool $useGhostScript = true,
+        bool $eraseIfExists = false,
     ): string|null 
     {
         $iExt = Files::getExtensionFromFilename($iPath);
@@ -72,6 +73,11 @@ class PdfUtil
         // Make path absolutes
         $iPath = Files::getAbsolutePath($iPath);
         $oPath = Files::getAbsolutePath($oPath);
+
+        // Check if output file exists
+        if (!$eraseIfExists && Files::exists($oPath)) {
+            return $oPath;
+        }
 
         // Ghostscript
         \system( "which gs > /dev/null", $retval);

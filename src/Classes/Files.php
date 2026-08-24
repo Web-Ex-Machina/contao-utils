@@ -292,4 +292,16 @@ class Files
 
         return Path::makeRelative($path, $strRootDir);
     }
+
+    /**
+     * Return true if files exists
+     * 
+     * @param string $path
+     * 
+     * @return string
+     */
+    public static function exists(string $path): bool
+    {
+        return \file_exists(self::getAbsolutePath($path));
+    }
 }
