@@ -6,6 +6,8 @@ Functionalities
  * Provide some utilities for develop Contao extensions
  * Class to execute commands
  * Class to generate strings
+ * Class to manipulate files
+ * Class to generate PDF to pictures
  * Class ScopeMatcher to check if request is backend/frontend
  * Extends Contao Query Builder
  * Extends Contao String Util
@@ -21,12 +23,13 @@ Twig Filters
 System requirements
 -------------------
 
- * Contao 4.* (Manager Edition)
+ * Contao 4.*
+ * Contao 5.*
 
 Installation
 ------------
 
-Clone the extension from Packagist (Contao 4 - Manager Edition) or directly from Composer
+Clone the extension from Packagist (Contao 4/5 - Manager Edition) or directly from Composer
 
 Enable Encryption Service
 ------------
