@@ -251,4 +251,16 @@ class Files
         $mime = strtolower($objFile->mime);
         return 'image/' === substr($mime, 0, 6) || 'application/pdf' === $mime;
     }
+
+    /**
+     * Return the file extension from its name
+     * 
+     * @param string $name - file name
+     * 
+     * @return string - file extension
+     */
+    public static function getExtensionFromFilename(string $name): string
+    {
+        return substr($name, strrpos($name, '.') + 1);
+    }
 }

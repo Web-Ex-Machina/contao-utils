@@ -1,6 +1,11 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.4.0 - 2026-08-24
+- Feat : Add new `WEM\UtilsBundle\Classes\PdfUtil` class
+- Feat : Add new `WEM\UtilsBundle\Classes\PdfUtil::getPageAsJpeg()` function to extract a page from PDF and return it as a picture path
+- Feat : Add new `WEM\UtilsBundle\Classes\Files::getExtensionFromFilename()` to get the extension from file path
+
 2.3.3 - 2026-08-13
 - Fix : `WEM\UtilsBundle\Classes\QueryBuilder::find` warning on unexisting array key
 
