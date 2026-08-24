@@ -86,11 +86,6 @@ class PdfUtil
         \system( "which gs > /dev/null", $retval);
         if ($useGhostScript && 0 === (int) $retval) {
             $exec_command  = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=" . $oFormat . " ";
-
-            if ($resizeW) {
-                $exec_command .= "-dDEVICEWIDTHPOINTS=". $resizeW . " ";
-            }
-
             $exec_command .= "-dTextAlphaBits=". $antialiasing . " -dGraphicsAlphaBits=" . $antialiasing . " ";
             $exec_command .= "-dFirstPage=" . $page . " -dLastPage=" . $page . " ";
             $exec_command .= "-r" . $resolution . " ";
