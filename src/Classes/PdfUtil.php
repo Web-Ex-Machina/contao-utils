@@ -27,7 +27,9 @@ class PdfUtil
      * @param int $page - PDF page to extract
      * @param int $antialiasing - Ghostscript setting
      * @param int $resolution - Ghostscript/Imagick setting
+     * @param int $resizeW - Resize generated picture
      * @param bool $useGhostScript - Set to true to use Ghostscript, fallback is Imagick
+     * @param bool $eraseIfExists - Set to true to erase existing file
      * 
      * @return string|null - either the path of the generated picture either null
      */ 
@@ -37,7 +39,8 @@ class PdfUtil
         int $page = 1,
         int $antialiasing = 4,
         int $resolution = 300,
-        bool $useGhostScript = true,
+        int $resizeW = 600,
+        bool $useGhostScript = false,
         bool $eraseIfExists = false,
     ): string|null 
     {
@@ -83,6 +86,11 @@ class PdfUtil
         \system( "which gs > /dev/null", $retval);
         if ($useGhostScript && 0 === (int) $retval) {
             $exec_command  = "gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=" . $oFormat . " ";
+
+            if ($resizeW) {
+                $exec_command .= "-dDEVICEWIDTHPOINTS=". $resizeW . " ";
+            }
+
             $exec_command .= "-dTextAlphaBits=". $antialiasing . " -dGraphicsAlphaBits=" . $antialiasing . " ";
             $exec_command .= "-dFirstPage=" . $page . " -dLastPage=" . $page . " ";
             $exec_command .= "-r" . $resolution . " ";
@@ -103,7 +111,10 @@ class PdfUtil
         $im->readImage($iPath . '[' . $page - 1 . ']');
         $im = $im->flattenImages();
         $im->setImageFormat($oFormat);
-        $im->thumbnailImage($resolution, 0);
+
+        if ($resizeW) {
+            $im->thumbnailImage($resizeW, 0);
+        }
 
         $objFile = new ContaoFile(Files::getRelativePath($oPath));
         $objFile->write((string) $im);
