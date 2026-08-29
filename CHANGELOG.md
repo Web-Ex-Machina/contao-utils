@@ -8,6 +8,9 @@ Extension "Utilities" for Contao Open Source CMS
 - Feat : Add new `WEM\UtilsBundle\Classes\CountriesUtil::getCountryContinent()` function 
 - Feat : Add new `WEM\UtilsBundle\Classes\MathUtil` class
 - Feat : Add new `WEM\UtilsBundle\Classes\MathUtil::vincentyGreatCircleDistance()` function 
+- Feat : Add new `WEM\UtilsBundle\Classes\DcaUtil` class
+- Feat : Add new `WEM\UtilsBundle\Classes\DcaUtil::getFieldConfig()` function 
+- Feat : Add new `WEM\UtilsBundle\Classes\DcaUtil::isFieldMultiple()` function 
 
 2.4.0 - 2026-08-24
 - Feat : Add new `WEM\UtilsBundle\Classes\PdfUtil` class
