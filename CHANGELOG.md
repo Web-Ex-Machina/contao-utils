@@ -1,7 +1,7 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
-2.5.0 - 2026-08-27
+2.5.0 - 2026-08-31
 - Feat : Add new `WEM\UtilsBundle\Classes\PackageUtil` class
 - Feat : Add new `WEM\UtilsBundle\Classes\PackageUtil::getVersion()` function that return the package version installed
 - Feat : Add new `WEM\UtilsBundle\Classes\CountriesUtil::getCountryISOCodeFromFullname()` function 
