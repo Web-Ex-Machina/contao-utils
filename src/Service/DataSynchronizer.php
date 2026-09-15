@@ -13,9 +13,7 @@ class DataSynchronizer
 	protected string $table;
 
 	public function __construct(
-		protected readonly ContaoFramework $framework
 	) {
-        $this->framework->initialize();
     }
 
     public function __set($name, $value): void
@@ -43,10 +41,19 @@ class DataSynchronizer
      * @param string $strParentField  [Parent Field]
      * @param string $strForeignField [Foreign field where to sync values]
      */
-    public function syncData(?array $varValues, $strTable, $intParentId, $strParentField, $strForeignField, ?array $arrAdditionalIdsToKeep = [], ?array $arrAdditionalFieldsValues = [], ?array $arrAdditionalConfigValues = []): array
-    {
+    public function syncData(
+        ?array $varValues,
+        string $strTable,
+        int|string $intParentId,
+        string $strParentField,
+        string $strForeignField,
+        ?array $arrAdditionalIdsToKeep = [],
+        ?array $arrAdditionalFieldsValues = [],
+        ?array $arrAdditionalConfigValues = [],
+    ): array {
         $arrIds = [];
         $stdModel = Model::getClassFromTable($strTable);
+        $intParentId = (int) $intParentId;
 
         // step 1 - update existing recipients, add new ones
         foreach ($varValues as $id) {
@@ -59,11 +66,10 @@ class DataSynchronizer
 
             if (!$objModel) {
                 $objModel = new $stdModel();
-                $objModel->createdAt = time();
-                $objModel->created_at = time();
                 $objModel->$strParentField = $intParentId;
                 $objModel->$strForeignField = $id;
             }
+
             if ($arrAdditionalFieldsValues) {
                 foreach ($arrAdditionalFieldsValues as $field => $value) {
                     $objModel->$field = $value;
@@ -72,105 +78,53 @@ class DataSynchronizer
 
             $objModel->tstamp = time();
             $objModel->save();
+
             $arrIds[] = $objModel->id;
         }
 
         // step 2 - remove all ids not in $varValues
         $arrIdsToKeep = array_merge($varValues, $arrAdditionalIdsToKeep);
 
+        $arrConfig = array_merge([
+            $strParentField => $intParentId,
+        ],  $arrAdditionalConfigValues);
+
         if (!empty($arrIdsToKeep)) {
-            $sql = \sprintf(
-                'DELETE FROM %s WHERE %s.%s = %s AND %s.%s NOT IN (%s)',
-                $strTable,
-                $strTable,
-                $strParentField,
-                $intParentId,
+            $arrConfig['where'][] = \sprintf(
+                '%s.%s NOT IN (%s)',
                 $strTable,
                 $strForeignField,
                 implode(',', array_map('intval', $arrIdsToKeep))
             );
-        } else {
-        	$sql = \sprintf(
-                'DELETE FROM %s WHERE %s.%s = %s',
-                $strTable,
-                $strTable,
-                $strParentField,
-                $intParentId,
-            );
         }
 
-        Database::getInstance()->prepare($sql)->execute();
-
-        return $arrIds;
-    }
-
-    /**
-     * Sync basic data between pivot tables.
-     *
-     * @param array  $varValues       [Usually an array of IDs]
-     * @param string $strTable        [Table where to sync]
-     * @param int    $intParentId     [Parent ID]
-     * @param string $strParentField  [Parent Field]
-     * @param string $strForeignField [Foreign field where to sync values]
-     */
-    public function syncDataString(?array $varValues, $strTable, $intParentId, $strParentField, $strForeignField, ?array $arrAdditionalIdsToKeep = [], ?array $arrAdditionalFieldsValues = [], ?array $arrAdditionalConfigValues = []): array
-    {
-        $arrIds = [];
-        // Found Model class
-        $stdModel = Model::getClassFromTable($strTable);
-
-        // step 1 - update existing recipients, add new ones
-        foreach ($varValues as $id) {
-            $arrConfig = array_merge([
-        		$strParentField => $intParentId,
-        		$strForeignField => $id,
-        	],  $arrAdditionalConfigValues);
-
-        	$objModel = $this->getModel($stdModel, $arrConfig);
-
-            if (!$objModel) {
-                $objModel = new $stdModel();
-                $objModel->createdAt = time();
-                $objModel->created_at = time();
-                $objModel->$strParentField = $intParentId;
-                $objModel->$strForeignField = $id;
-                if ($arrAdditionalFieldsValues) {
-                    foreach ($arrAdditionalFieldsValues as $field => $value) {
-                        $objModel->$field = $value;
-                    }
+        if (method_exists($stdModel, 'findItems')) {
+            $objItems = $stdModel::findItems($arrConfig);
+        } else {
+            $arrWheres = [];
+            $arrValues = [];
+            foreach ($arrConfig as $c => $v) {
+                switch ($c) {
+                    case 'where':
+                        foreach ($v as $w) {
+                            $arrWheres[] = $w;
+                            $arrValues[] = "";
+                        }
+                    break;
+                    default:
+                        $arrWheres[] = $c.' = ?';
+                        $arrValues[] = $v;
                 }
             }
 
-            $objModel->tstamp = time();
-            $objModel->save();
-            $arrIds[] = $objModel->id;
+            $objItems = $stdModel::findBy($arrWheres, $arrValues);
         }
 
-        // step 2 - remove all ids not in $varValues
-        $arrIdsToKeep = array_merge($varValues, $arrAdditionalIdsToKeep);
-
-        if (!empty($arrIdsToKeep)) {
-            $sql = \sprintf(
-                'DELETE FROM %s WHERE %s.%s = %s AND %s.%s NOT IN (%s)',
-                $strTable,
-                $strTable,
-                $strParentField,
-                $intParentId,
-                $strTable,
-                $strForeignField,
-                implode('","', $arrIdsToKeep)
-            );
-        } else {
-        	$sql = \sprintf(
-                'DELETE FROM %s WHERE %s.%s = %s',
-                $strTable,
-                $strTable,
-                $strParentField,
-                $intParentId,
-            );
+        if ($objItems && 0 < $objItems->count()) {
+            while ($objItems->next()) {
+                $objItems->delete();
+            }
         }
-
-        Database::getInstance()->prepare($sql)->execute();
 
         return $arrIds;
     }
@@ -189,27 +143,16 @@ class DataSynchronizer
             $objModels = $stdModel::findItems($arrColumns, 1);
             $objModel = $objModels ? $objModels->current() : null;
         } else {
-        	$arrWheres = [];
-        	$arrValues = [];
-        	foreach ($arrColumns as $c => $v) {
-        		$arrWheres[] = $c.' = ?';
-        		$arrValues[] = $v;
-        	}
+            $arrWheres = [];
+            $arrValues = [];
+            foreach ($arrColumns as $c => $v) {
+                $arrWheres[] = $c.' = ?';
+                $arrValues[] = $v;
+            }
 
             $objModel = $stdModel::findOneBy($arrWheres, $arrValues);
         }
 
         return $objModel;
-    }
-
-    /**
-     * Delete rows
-     * 
-     * @param array
-     * @param array
-     **/
-    protected function deleteRows(): void
-    {
-    	Database::getInstance()->prepare($sql)->execute();
     }
 }
