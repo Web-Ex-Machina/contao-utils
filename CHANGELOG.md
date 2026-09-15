@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.6.0 - 2026-09-15
+- Feat : Add new `WEM\UtilsBundle\Service\DataSynchronizer` service
+
 2.5.0 - 2026-08-31
 - Feat : Add new `WEM\UtilsBundle\Classes\PackageUtil` class
 - Feat : Add new `WEM\UtilsBundle\Classes\PackageUtil::getVersion()` function that return the package version installed

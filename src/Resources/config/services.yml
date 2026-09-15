@@ -55,6 +55,13 @@ services:
       - '@twig'
       - '@contao.twig.filesystem_loader'
       - '@contao.csrf.token_manager'
+
+  wem.utils.service.data_synchronizer:
+    class: WEM\UtilsBundle\Service\DataSynchronizer
+    public: true
+  WEM\UtilsBundle\Service\DataSynchronizer:
+    alias: wem.utils.service.data_synchronizer
+    public: true
   
   wem.twig.preg_replace_runtime:
     class: WEM\UtilsBundle\Twig\Runtime\PregReplaceRuntime
