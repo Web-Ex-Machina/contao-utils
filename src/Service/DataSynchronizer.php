@@ -83,7 +83,7 @@ class DataSynchronizer
         }
 
         // step 2 - remove all ids not in $varValues
-        $arrIdsToKeep = array_merge($varValues, $arrAdditionalIdsToKeep);
+        $arrIdsToKeep = array_merge($arrIds, $arrAdditionalIdsToKeep);
 
         $arrConfig = array_merge([
             $strParentField => $intParentId,
@@ -91,9 +91,8 @@ class DataSynchronizer
 
         if (!empty($arrIdsToKeep)) {
             $arrConfig['where'][] = \sprintf(
-                '%s.%s NOT IN (%s)',
+                '%s.id NOT IN (%s)',
                 $strTable,
-                $strForeignField,
                 implode(',', array_map('intval', $arrIdsToKeep))
             );
         }
