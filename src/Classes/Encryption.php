@@ -22,7 +22,7 @@ use phpseclib3\Crypt\Blowfish;
 class Encryption
 {
     private ?string $encryptionKey;
-
+    private $cipher;
     private const IV = "\0\0\0\0\0\0\0\0";
 
 
@@ -38,6 +38,9 @@ class Encryption
         if ($truncateKey) {
             $this->encryptionKey = substr($this->encryptionKey, 0, 56);
         }
+        $this->cipher = new Blowfish('cbc');
+        $this->cipher->setKey($this->encryptionKey);
+        $this->cipher->setIV(self::IV);
     }
 
 
@@ -54,12 +57,7 @@ class Encryption
         }
         
         if ($value !== "") {
-
-            $cipher = new Blowfish('cbc');
-            $cipher->setKey($this->encryptionKey);
-            $cipher->setIV(self::IV);
-
-            return $cipher->encrypt($value);
+            return $this->cipher->encrypt($value);
         }
 
         return null;
@@ -78,12 +76,7 @@ class Encryption
         }
         
         if ($value !== "") {
-
-            $cipher = new Blowfish('cbc');
-            $cipher->setKey($this->encryptionKey);
-            $cipher->setIV(self::IV);
-
-            return $cipher->decrypt($value);
+            return $this->cipher->decrypt($value);
         }
 
         return null;
