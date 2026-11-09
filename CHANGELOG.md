@@ -1,6 +1,9 @@
 Extension "Utilities" for Contao Open Source CMS
 ========
 
+2.6.1 - 2026-11-09
+- Fix : performances issues in `WEM\UtilsBundle\Classes\Encryption.php`
+
 2.6.0 - 2026-09-15
 - Feat : Add new `WEM\UtilsBundle\Service\DataSynchronizer` service
 
